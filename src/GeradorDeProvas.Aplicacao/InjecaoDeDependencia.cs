@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using GeradorDeProvas.Aplicacao.Modulos.ModuloDisciplina;
 
 namespace GeradorDeProvas.Aplicacao;
 
@@ -10,7 +11,6 @@ public static class InjecaoDeDependencia
         IConfiguration configuration
     )
     {
-        // Configuração dos serviços
-        // services.AddScoped<ServicoEntidade>();
+        services.AddScoped<ServicoDisciplina>();
     }
 }

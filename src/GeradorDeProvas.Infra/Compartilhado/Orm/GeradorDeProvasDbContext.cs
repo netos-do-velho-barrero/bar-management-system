@@ -1,5 +1,6 @@
 using System.Reflection;
 using GeradorDeProvas.Dominio.Compartilhado.Identity;
+using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,7 @@ public sealed class GeradorDeProvasDbContext(
     IProvedorDeUsuario? userProvider = null
 ) : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>(options)
 {
-    // Configuração de tabelas
-    // public DbSet<Entidade> Entidades => Set<Entidade>();
+    public DbSet<Disciplina> Disciplinas => Set<Disciplina>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,8 +26,8 @@ public sealed class GeradorDeProvasDbContext(
         // O EF faz cachê do OnModelCreating e variáveis locais não são atualizadas
         if (userProvider is not null)
         {
-            // modelBuilder.Entity<Entidade>()
-            //     .HasQueryFilter(e => e.UserId == userProvider.Id);
+            modelBuilder.Entity<Disciplina>()
+                .HasQueryFilter(d => d.UserId == userProvider.Id);
         }
     }
 

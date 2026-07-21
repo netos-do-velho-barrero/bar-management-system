@@ -1,5 +1,7 @@
 using GeradorDeProvas.Infra.Compartilhado.Logging;
 using GeradorDeProvas.Infra.Compartilhado.Orm;
+using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
+using GeradorDeProvas.Infra.Modulos.ModuloDisciplina;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -61,7 +63,6 @@ public static class InjecaoDeDependencia
         .AddSignInManager() // Configuração do SignInManager
         .AddDefaultTokenProviders();
 
-        // Configura os repositórios
-        // services.AddScoped<IRepositorioEntidade, RepositorioEntidadeEmOrm>();
+        services.AddScoped<IRepositorioDisciplina, RepositorioDisciplinaEmOrm>();
     }
 }

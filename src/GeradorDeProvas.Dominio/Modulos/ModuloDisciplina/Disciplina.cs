@@ -1,0 +1,34 @@
+using GeradorDeProvas.Dominio.Compartilhado;
+using GeradorDeProvas.Dominio.Compartilhado.Identity;
+
+namespace GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
+
+public class Disciplina : EntidadeBase<Disciplina>, IEntidadeDoUsuario
+{
+    public string Nome { get; set; } = string.Empty;
+    public Guid UserId { get; set; }
+
+    public Disciplina()
+    {
+    }
+
+    public Disciplina(string nome) : this()
+    {
+        Nome = nome;
+    }
+
+    public override List<string> Validar()
+    {
+        List<string> erros = [];
+
+        if (string.IsNullOrWhiteSpace(Nome) || Nome.Length < 2 || Nome.Length > 100)
+            erros.Add("O campo \"Nome\" deve conter entre 2 e 100 caracteres.");
+
+        return erros;
+    }
+
+    public override void Atualizar(Disciplina entidadeAtualizada)
+    {
+        Nome = entidadeAtualizada.Nome;
+    }
+}

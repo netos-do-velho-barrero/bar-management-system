@@ -4,10 +4,6 @@ namespace GeradorDeProvas.WebApp.Modulos.ModuloAutenticacao;
 
 public record RegistrarViewModel
 {
-    [Required(ErrorMessage = "O campo \"Nome\" deve ser preenchido.")]
-    [StringLength(100, MinimumLength = 2, ErrorMessage = "O campo \"Nome\" deve conter entre 2 e 100 caracteres.")]
-    public string Nome { get; init; } = string.Empty;
-
     [Required(ErrorMessage = "O campo \"E-mail\" deve ser preenchido.")]
     [EmailAddress(ErrorMessage = "O campo \"E-mail\" deve conter um endereço de e-mail válido.")]
     [StringLength(256, ErrorMessage = "O campo \"E-mail\" deve conter no máximo 256 caracteres.")]
