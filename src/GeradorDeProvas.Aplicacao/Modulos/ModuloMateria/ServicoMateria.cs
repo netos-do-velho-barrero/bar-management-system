@@ -2,12 +2,14 @@ using FluentResults;
 using GeradorDeProvas.Aplicacao.Compartilhado;
 using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
 using GeradorDeProvas.Dominio.Modulos.ModuloMateria;
+using GeradorDeProvas.Dominio.Modulos.ModuloQuestao;
 
 namespace GeradorDeProvas.Aplicacao.Modulos.ModuloMateria;
 
 public class ServicoMateria(
     IRepositorioMateria repositorioMateria,
-    IRepositorioDisciplina repositorioDisciplina
+    IRepositorioDisciplina repositorioDisciplina,
+    IRepositorioQuestao repositorioQuestao
 ) : ServicoBase<Materia>
 {
     public Result Cadastrar(CadastrarMateriaDto dto)
@@ -63,6 +65,9 @@ public class ServicoMateria(
 
         if (materia == null)
             return Falha(string.Empty, "Matéria não encontrada.");
+
+        if (PossuiQuestoesVinculadas(id))
+            return Falha(string.Empty, "Não é possível excluir esta matéria, pois ela possui questões vinculadas.");
 
         repositorioMateria.Excluir(id);
 
@@ -128,5 +133,12 @@ public class ServicoMateria(
     private static string NormalizarNome(string nome)
     {
         return nome.Trim().ToLowerInvariant();
+    }
+
+    private bool PossuiQuestoesVinculadas(Guid materiaId)
+    {
+        return repositorioQuestao
+            .SelecionarTodos()
+            .Any(q => q.Materia.Id == materiaId);
     }
 }

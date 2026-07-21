@@ -29,5 +29,11 @@ public sealed class MateriaConfiguration : IEntityTypeConfiguration<Materia>
         builder.HasIndex(m => new { m.UserId, m.Nome })
             .IsUnique()
             .HasDatabaseName("UQ_TBMateria_UserId_Nome");
+
+        builder.HasMany(m => m.Questoes)
+            .WithOne(q => q.Materia)
+            .HasForeignKey("MateriaId")
+            .HasConstraintName("FK_TBQuestao_TBMateria")
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
