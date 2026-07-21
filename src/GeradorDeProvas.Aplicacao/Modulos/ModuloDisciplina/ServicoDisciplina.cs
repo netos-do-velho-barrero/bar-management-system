@@ -1,11 +1,13 @@
 using FluentResults;
 using GeradorDeProvas.Aplicacao.Compartilhado;
 using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
+using GeradorDeProvas.Dominio.Modulos.ModuloMateria;
 
 namespace GeradorDeProvas.Aplicacao.Modulos.ModuloDisciplina;
 
 public class ServicoDisciplina(
-    IRepositorioDisciplina repositorioDisciplina
+    IRepositorioDisciplina repositorioDisciplina,
+    IRepositorioMateria repositorioMateria
 ) : ServicoBase<Disciplina>
 {
     public Result Cadastrar(CadastrarDisciplinaDto dto)
@@ -52,6 +54,9 @@ public class ServicoDisciplina(
         if (disciplina == null)
             return Falha(string.Empty, "Disciplina não encontrada.");
 
+        if (PossuiMateriasVinculadas(id))
+            return Falha(string.Empty, "Não é possível excluir esta disciplina, pois ela possui matérias vinculadas.");
+
         repositorioDisciplina.Excluir(id);
 
         return Result.Ok();
@@ -87,5 +92,12 @@ public class ServicoDisciplina(
     private static string NormalizarNome(string nome)
     {
         return nome.Trim().ToLowerInvariant();
+    }
+
+    private bool PossuiMateriasVinculadas(Guid disciplinaId)
+    {
+        return repositorioMateria
+            .SelecionarTodos()
+            .Any(m => m.Disciplina.Id == disciplinaId);
     }
 }

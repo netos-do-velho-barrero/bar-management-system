@@ -1,6 +1,7 @@
 using System.Reflection;
 using GeradorDeProvas.Dominio.Compartilhado.Identity;
 using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
+using GeradorDeProvas.Dominio.Modulos.ModuloMateria;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ public sealed class GeradorDeProvasDbContext(
 ) : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>(options)
 {
     public DbSet<Disciplina> Disciplinas => Set<Disciplina>();
+    public DbSet<Materia> Materias => Set<Materia>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,6 +30,9 @@ public sealed class GeradorDeProvasDbContext(
         {
             modelBuilder.Entity<Disciplina>()
                 .HasQueryFilter(d => d.UserId == userProvider.Id);
+
+            modelBuilder.Entity<Materia>()
+                .HasQueryFilter(m => m.UserId == userProvider.Id);
         }
     }
 

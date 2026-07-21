@@ -26,5 +26,11 @@ public sealed class DisciplinaConfiguration : IEntityTypeConfiguration<Disciplin
         builder.HasIndex(d => new { d.UserId, d.Nome })
             .IsUnique()
             .HasDatabaseName("UQ_TBDisciplina_UserId_Nome");
+
+        builder.HasMany(d => d.Materias)
+            .WithOne(m => m.Disciplina)
+            .HasForeignKey("DisciplinaId")
+            .HasConstraintName("FK_TBMateria_TBDisciplina")
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

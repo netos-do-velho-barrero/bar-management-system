@@ -1,7 +1,9 @@
 using GeradorDeProvas.Infra.Compartilhado.Logging;
 using GeradorDeProvas.Infra.Compartilhado.Orm;
 using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
+using GeradorDeProvas.Dominio.Modulos.ModuloMateria;
 using GeradorDeProvas.Infra.Modulos.ModuloDisciplina;
+using GeradorDeProvas.Infra.Modulos.ModuloMateria;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -64,5 +66,6 @@ public static class InjecaoDeDependencia
         .AddDefaultTokenProviders();
 
         services.AddScoped<IRepositorioDisciplina, RepositorioDisciplinaEmOrm>();
+        services.AddScoped<IRepositorioMateria, RepositorioMateriaEmOrm>();
     }
 }
