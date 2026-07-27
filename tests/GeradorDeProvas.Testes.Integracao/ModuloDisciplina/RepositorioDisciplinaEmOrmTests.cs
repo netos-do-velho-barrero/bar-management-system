@@ -1,9 +1,5 @@
 using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
-using GeradorDeProvas.Infra.Compartilhado.Orm;
-using GeradorDeProvas.Infra.Modulos.ModuloDisciplina;
-using GeradorDeProvas.Testes.Integracao.Compartilhado.Identity;
 using GeradorDeProvas.Testes.Integracao.Compartilhado.Orm;
-using Microsoft.EntityFrameworkCore;
 using FizzWare.NBuilder;
 
 namespace GeradorDeProvas.Testes.Integracao.ModuloDisciplina;

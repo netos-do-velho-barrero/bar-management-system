@@ -7,6 +7,9 @@ using FizzWare.NBuilder;
 using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
 using GeradorDeProvas.Infra.Modulos.ModuloMateria;
 using GeradorDeProvas.Dominio.Modulos.ModuloMateria;
+using GeradorDeProvas.Dominio.Modulos.ModuloProva;
+using GeradorDeProvas.Infra.Modulos.ModuloQuestao;
+using GeradorDeProvas.Dominio.Modulos.ModuloQuestao;
 
 namespace GeradorDeProvas.Testes.Integracao.Compartilhado.Orm;
 
@@ -15,6 +18,7 @@ public abstract class RepositorioBaseEmOrmTests
     protected GeradorDeProvasDbContext dbContext = null!;
     protected RepositorioDisciplinaEmOrm repositorioDisciplina = null!;
     protected RepositorioMateriaEmOrm repositorioMateria = null!;
+    protected RepositorioQuestaoEmOrm repositorioQuestao = null!;
     protected RepositorioProvaEmOrm repositorioProva = null!;
 
     // Hooks / Ganchos
@@ -22,8 +26,6 @@ public abstract class RepositorioBaseEmOrmTests
     public void InicializarContexto()
     {
         dbContext = CriarDbContext(Guid.NewGuid());
-
-        repositorioProva = new RepositorioProvaEmOrm(dbContext);
 
         // Disciplina
         repositorioDisciplina = new RepositorioDisciplinaEmOrm(dbContext);
@@ -43,6 +45,26 @@ public abstract class RepositorioBaseEmOrmTests
         {
             foreach (Materia m in materias)
                 repositorioMateria.Cadastrar(m);
+        });
+
+        // Questao
+        repositorioQuestao = new RepositorioQuestaoEmOrm(dbContext);
+
+        BuilderSetup.SetCreatePersistenceMethod<Questao>(repositorioQuestao.Cadastrar);
+        BuilderSetup.SetCreatePersistenceMethod<IList<Questao>>((questoes) =>
+        {
+            foreach (Questao q in questoes)
+                repositorioQuestao.Cadastrar(q);
+        });
+
+        // Prova
+        repositorioProva = new RepositorioProvaEmOrm(dbContext);
+
+        BuilderSetup.SetCreatePersistenceMethod<Prova>(repositorioProva.Cadastrar);
+        BuilderSetup.SetCreatePersistenceMethod<IList<Prova>>((provas) =>
+        {
+            foreach (Prova p in provas)
+                repositorioProva.Cadastrar(p);
         });
     }
 

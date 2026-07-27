@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using FizzWare.NBuilder;
 using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
 using GeradorDeProvas.Dominio.Modulos.ModuloMateria;
