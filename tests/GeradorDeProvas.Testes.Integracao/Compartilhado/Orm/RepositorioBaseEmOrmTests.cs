@@ -5,6 +5,8 @@ using GeradorDeProvas.Testes.Integracao.Compartilhado.Identity;
 using Microsoft.EntityFrameworkCore;
 using FizzWare.NBuilder;
 using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
+using GeradorDeProvas.Infra.Modulos.ModuloMateria;
+using GeradorDeProvas.Dominio.Modulos.ModuloMateria;
 
 namespace GeradorDeProvas.Testes.Integracao.Compartilhado.Orm;
 
@@ -12,6 +14,7 @@ public abstract class RepositorioBaseEmOrmTests
 {
     protected GeradorDeProvasDbContext dbContext = null!;
     protected RepositorioDisciplinaEmOrm repositorioDisciplina = null!;
+    protected RepositorioMateriaEmOrm repositorioMateria = null!;
     protected RepositorioProvaEmOrm repositorioProva = null!;
 
     // Hooks / Ganchos
@@ -20,8 +23,10 @@ public abstract class RepositorioBaseEmOrmTests
     {
         dbContext = CriarDbContext(Guid.NewGuid());
 
-        repositorioDisciplina = new RepositorioDisciplinaEmOrm(dbContext);
         repositorioProva = new RepositorioProvaEmOrm(dbContext);
+
+        // Disciplina
+        repositorioDisciplina = new RepositorioDisciplinaEmOrm(dbContext);
 
         BuilderSetup.SetCreatePersistenceMethod<Disciplina>((disciplina) =>
         {
@@ -32,10 +37,26 @@ public abstract class RepositorioBaseEmOrmTests
         BuilderSetup.SetCreatePersistenceMethod<IList<Disciplina>>((disciplinas) =>
         {
             foreach (Disciplina d in disciplinas)
-            {
                 repositorioDisciplina.Cadastrar(d);
-                dbContext.ChangeTracker.Clear();
-            }
+
+            dbContext.ChangeTracker.Clear();
+        });
+
+        // Materia
+        repositorioMateria = new RepositorioMateriaEmOrm(dbContext);
+
+        BuilderSetup.SetCreatePersistenceMethod<Materia>((materia) =>
+        {
+            repositorioMateria.Cadastrar(materia);
+            dbContext.ChangeTracker.Clear();
+        });
+
+        BuilderSetup.SetCreatePersistenceMethod<IList<Materia>>((materias) =>
+        {
+            foreach (Materia m in materias)
+                repositorioMateria.Cadastrar(m);
+
+            dbContext.ChangeTracker.Clear();
         });
     }
 
