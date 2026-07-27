@@ -28,35 +28,21 @@ public abstract class RepositorioBaseEmOrmTests
         // Disciplina
         repositorioDisciplina = new RepositorioDisciplinaEmOrm(dbContext);
 
-        BuilderSetup.SetCreatePersistenceMethod<Disciplina>((disciplina) =>
-        {
-            repositorioDisciplina.Cadastrar(disciplina);
-            dbContext.ChangeTracker.Clear();
-        });
-
+        BuilderSetup.SetCreatePersistenceMethod<Disciplina>(repositorioDisciplina.Cadastrar);
         BuilderSetup.SetCreatePersistenceMethod<IList<Disciplina>>((disciplinas) =>
         {
             foreach (Disciplina d in disciplinas)
                 repositorioDisciplina.Cadastrar(d);
-
-            dbContext.ChangeTracker.Clear();
         });
 
         // Materia
         repositorioMateria = new RepositorioMateriaEmOrm(dbContext);
 
-        BuilderSetup.SetCreatePersistenceMethod<Materia>((materia) =>
-        {
-            repositorioMateria.Cadastrar(materia);
-            dbContext.ChangeTracker.Clear();
-        });
-
+        BuilderSetup.SetCreatePersistenceMethod<Materia>(repositorioMateria.Cadastrar);
         BuilderSetup.SetCreatePersistenceMethod<IList<Materia>>((materias) =>
         {
             foreach (Materia m in materias)
                 repositorioMateria.Cadastrar(m);
-
-            dbContext.ChangeTracker.Clear();
         });
     }
 
