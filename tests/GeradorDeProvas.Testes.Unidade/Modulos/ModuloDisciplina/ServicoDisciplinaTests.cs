@@ -42,4 +42,32 @@ public sealed class ServicoDisciplinaTests
 
         repositorioDisciplina.Verify(r => r.Cadastrar(It.IsAny<Disciplina>()), Times.Once);
     }
+
+    [TestMethod]
+    public void Cadastrar_NomeDuplicado_RetornaFalha()
+    {
+        // Arrange
+        Mock<IRepositorioDisciplina> repositorioDisciplina = new Mock<IRepositorioDisciplina>();
+        Mock<IRepositorioMateria> repositorioMateria = new Mock<IRepositorioMateria>();
+
+        repositorioDisciplina
+            .Setup(r => r.SelecionarTodos())
+            .Returns([new Disciplina("Matemática")]);
+
+        ServicoDisciplina servicoDisciplina = new ServicoDisciplina(
+            repositorioDisciplina.Object,
+            repositorioMateria.Object
+        );
+
+        // Act
+        Result resultado = servicoDisciplina
+            .Cadastrar(new CadastrarDisciplinaDto(" MATEMÁTICA "));
+
+        // Assert
+        Assert.IsTrue(resultado.IsFailed);
+        Assert.AreEqual("Nome", resultado.Errors.Single().Metadata["Campo"]);
+        Assert.Contains("Já existe", resultado.Errors.Single().Message);
+
+        repositorioDisciplina.Verify(r => r.Cadastrar(It.IsAny<Disciplina>()), Times.Never);
+    }
 }
