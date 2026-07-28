@@ -70,4 +70,67 @@ public sealed class ServicoDisciplinaTests
 
         repositorioDisciplina.Verify(r => r.Cadastrar(It.IsAny<Disciplina>()), Times.Never);
     }
+
+    [TestMethod]
+    public void Excluir_DisciplinaSemVinculos_ExcluiDisciplina()
+    {
+        // Arrange
+        Disciplina disciplina = new Disciplina("Matemática");
+
+        Mock<IRepositorioDisciplina> repositorioDisciplina = new();
+        Mock<IRepositorioMateria> repositorioMateria = new();
+
+        repositorioDisciplina
+            .Setup(r => r.SelecionarPorId(disciplina.Id))
+            .Returns(disciplina);
+
+        repositorioMateria
+            .Setup(r => r.SelecionarTodos())
+            .Returns([]);
+
+        ServicoDisciplina servicoDisciplina = new ServicoDisciplina(
+            repositorioDisciplina.Object,
+            repositorioMateria.Object
+        );
+
+        // Act
+        Result resultado = servicoDisciplina.Excluir(disciplina.Id);
+
+        // Assert
+        Assert.IsTrue(resultado.IsSuccess);
+
+        repositorioDisciplina.Verify(r => r.Excluir(disciplina.Id), Times.Once);
+    }
+
+    [TestMethod]
+    public void Excluir_DisciplinaComMateriasVinculadas_RetornaFalha()
+    {
+        // Arrange
+        Disciplina disciplina = new Disciplina("Matemática");
+
+        Mock<IRepositorioDisciplina> repositorioDisciplina = new();
+        Mock<IRepositorioMateria> repositorioMateria = new();
+
+        repositorioDisciplina
+            .Setup(r => r.SelecionarPorId(disciplina.Id))
+            .Returns(disciplina);
+
+        repositorioMateria
+            .Setup(r => r.SelecionarTodos())
+            .Returns([new Materia("Álgebra", 7, disciplina)]);
+
+        ServicoDisciplina servicoDisciplina = new ServicoDisciplina(
+            repositorioDisciplina.Object,
+            repositorioMateria.Object
+        );
+
+        // Act
+        Result resultado = servicoDisciplina.Excluir(disciplina.Id);
+
+        // Assert
+        Assert.IsTrue(resultado.IsFailed);
+        Assert.Contains("matérias vinculadas", resultado.Errors.Single().Message);
+
+        repositorioDisciplina.Verify(r => r.Excluir(disciplina.Id), Times.Never);
+    }
 }
