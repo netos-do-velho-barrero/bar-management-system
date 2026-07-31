@@ -12,6 +12,7 @@ public sealed class GeradorPdfProvaTests
     public void ConfigurarQuestPdf()
     {
         QuestPDF.Settings.License = LicenseType.Community;
+        QuestPDF.Settings.UseEnvironmentFonts = false;
     }
 
     [TestMethod]
