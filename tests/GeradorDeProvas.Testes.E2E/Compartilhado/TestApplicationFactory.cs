@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -15,14 +14,12 @@ namespace GeradorDeProvas.Testes.E2E.Compartilhado;
 public sealed class TestApplicationFactory : WebApplicationFactory<Entrypoint>
 {
     private readonly string nomeBanco;
-    private readonly InMemoryDatabaseRoot dbRoot;
 
     public string UrlBase { get; }
 
     public TestApplicationFactory()
     {
         nomeBanco = $"e2e-{Guid.NewGuid():N}";
-        dbRoot = new InMemoryDatabaseRoot();
 
         UseKestrel(0);
         StartServer();
@@ -42,7 +39,7 @@ public sealed class TestApplicationFactory : WebApplicationFactory<Entrypoint>
 
             services.AddDbContext<GeradorDeProvasDbContext>(options =>
             {
-                options.UseInMemoryDatabase(nomeBanco, dbRoot);
+                options.UseInMemoryDatabase(nomeBanco);
             });
         });
     }

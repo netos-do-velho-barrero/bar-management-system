@@ -8,7 +8,6 @@ namespace GeradorDeProvas.Testes.E2E.Modulos;
 [TestClass]
 public sealed class AutenticacaoE2ETests : PageTest
 {
-
     private TestApplicationFactory aplicacao = null!;
     private string UrlBase { get; set; } = string.Empty;
 
