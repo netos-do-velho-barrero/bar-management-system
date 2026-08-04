@@ -3,7 +3,7 @@ using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
 using GeradorDeProvas.Dominio.Modulos.ModuloMateria;
 using GeradorDeProvas.Testes.Integracao.Compartilhado.Orm;
 
-namespace GeradorDeProvas.Testes.Integracao.ModuloMateria;
+namespace GeradorDeProvas.Testes.Integracao.Modulos;
 
 [TestClass]
 public sealed class RepositorioMateriaEmOrmTests : RepositorioBaseEmOrmTests

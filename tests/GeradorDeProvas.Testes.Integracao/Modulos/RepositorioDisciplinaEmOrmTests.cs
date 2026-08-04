@@ -2,7 +2,7 @@ using GeradorDeProvas.Dominio.Modulos.ModuloDisciplina;
 using GeradorDeProvas.Testes.Integracao.Compartilhado.Orm;
 using FizzWare.NBuilder;
 
-namespace GeradorDeProvas.Testes.Integracao.ModuloDisciplina;
+namespace GeradorDeProvas.Testes.Integracao.Modulos;
 
 [TestClass]
 public sealed class RepositorioDisciplinaEmOrmTests : RepositorioBaseEmOrmTests

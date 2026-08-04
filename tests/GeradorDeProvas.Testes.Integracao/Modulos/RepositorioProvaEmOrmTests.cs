@@ -5,7 +5,7 @@ using GeradorDeProvas.Dominio.Modulos.ModuloProva;
 using GeradorDeProvas.Dominio.Modulos.ModuloQuestao;
 using GeradorDeProvas.Testes.Integracao.Compartilhado.Orm;
 
-namespace GeradorDeProvas.Testes.Integracao.ModuloProva;
+namespace GeradorDeProvas.Testes.Integracao.Modulos;
 
 [TestClass]
 public sealed class RepositorioProvaEmOrmTests : RepositorioBaseEmOrmTests
