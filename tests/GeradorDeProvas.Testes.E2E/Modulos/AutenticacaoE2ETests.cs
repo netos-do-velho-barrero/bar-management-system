@@ -9,6 +9,7 @@ namespace GeradorDeProvas.Testes.E2E.Modulos;
 public sealed class AutenticacaoE2ETests : PageTest
 {
     private TestApplicationFactory aplicacao = null!;
+
     private string UrlBase { get; set; } = string.Empty;
 
     [TestInitialize]
@@ -20,12 +21,12 @@ public sealed class AutenticacaoE2ETests : PageTest
     }
 
     [TestCleanup]
-    public void LiberarAplicacao()
+    public async Task EncerrarAplicacao()
     {
         try
         {
-            if (aplicacao != null)
-                aplicacao.Dispose();
+            if (aplicacao is not null)
+                await aplicacao.DisposeAsync();
         }
         finally
         {
@@ -36,7 +37,6 @@ public sealed class AutenticacaoE2ETests : PageTest
     [TestMethod]
     public async Task Deve_Exibir_TelaDeLogin_ParaUsuarioAnonimo()
     {
-        // Arrange
         // Act
         await Page.GotoAsync($"{UrlBase}/");
 
