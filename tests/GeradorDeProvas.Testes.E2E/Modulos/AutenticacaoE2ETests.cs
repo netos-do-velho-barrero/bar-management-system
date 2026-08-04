@@ -1,5 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using GeradorDeProvas.Testes.E2E.Compartilhado;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Client;
 using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 
@@ -64,5 +67,52 @@ public sealed class AutenticacaoE2ETests : PageTest
         string rotaAbsoluta = new Uri(Page.Url).AbsolutePath;
 
         Assert.AreEqual("/", rotaAbsoluta);
+    }
+
+    [TestMethod]
+    public async Task Deve_EntrarEAutenticar_Usuario_Valido()
+    {
+        // Arrange
+        const string email = "login.valido@teste.local";
+        const string senha = "Senha123!";
+
+        await RegistrarEAutenticarUsuario(email, senha);
+
+        // Act
+        await Page.GotoAsync($"{UrlBase}/Autenticacao/Entrar");
+        await Page.GetByLabel("E-mail").FillAsync(email);
+        await Page.GetByLabel("Senha", new() { Exact = true }).FillAsync(senha);
+
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Entrar" }).ClickAsync();
+
+        // Assert
+        string rotaAbsoluta = new Uri(Page.Url).AbsolutePath;
+
+        Assert.AreEqual("/", rotaAbsoluta);
+
+        await Expect(Page.GetByRole(AriaRole.Button, new() { Name = email }))
+            .ToBeVisibleAsync();
+    }
+
+    private async Task RegistrarEAutenticarUsuario(string email, string senha)
+    {
+        using IServiceScope scope = aplicacao.Services.CreateScope();
+
+        UserManager<IdentityUser<Guid>> userManager =
+            scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser<Guid>>>();
+
+        IdentityUser<Guid> user = new IdentityUser<Guid>()
+        {
+            Id = Guid.CreateVersion7(),
+            UserName = email,
+            Email = email
+        };
+
+        IdentityResult resultado = await userManager.CreateAsync(user, senha);
+
+        Assert.IsTrue(
+            resultado.Succeeded,
+            string.Join("; ", resultado.Errors.Select(erro => erro.Description))
+        );
     }
 }
