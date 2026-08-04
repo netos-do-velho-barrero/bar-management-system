@@ -93,7 +93,7 @@ public sealed class DisciplinaE2ETests : E2ETestsBase
     public async Task DeveExcluir_Disciplina_SemVinculos()
     {
         // Arrange
-        await RegistrarEEntrarAsync("disciplina.exlusao@teste.local", "Senha123!");
+        await RegistrarEEntrarAsync("disciplina.exclusao@teste.local", "Senha123!");
         await CadastrarDisciplinaAsync("Matemática");
 
         ILocator card = Page.Locator(".card").Filter(new() { HasText = "Matemática" });
