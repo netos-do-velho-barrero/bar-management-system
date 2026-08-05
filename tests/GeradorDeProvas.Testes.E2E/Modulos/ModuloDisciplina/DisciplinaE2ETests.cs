@@ -1,7 +1,7 @@
 using GeradorDeProvas.Testes.E2E.Compartilhado;
 using Microsoft.Playwright;
 
-namespace GeradorDeProvas.Testes.E2E.Modulos;
+namespace GeradorDeProvas.Testes.E2E.Modulos.ModuloDisciplina;
 
 [TestClass]
 public sealed class DisciplinaE2ETests : E2ETestsBase
