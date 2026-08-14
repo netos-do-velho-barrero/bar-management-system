@@ -1,4 +1,4 @@
-using ControleDeBar.Testes.E2E.Modulos.ModuloAutenticacao;
+// using ControleDeBar.Testes.E2E.Modulos.ModuloAutenticacao;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Playwright;
@@ -56,14 +56,14 @@ public abstract class E2ETestsBase : PageTest
         );
     }
 
-    protected async Task RegistrarEEntrarAsync(string email, string senha)
-    {
-        await RegistrarUsuarioAsync(email, senha);
+    // protected async Task RegistrarEEntrarAsync(string email, string senha)
+    // {
+    //     await RegistrarUsuarioAsync(email, senha);
 
-        EntrarPage entrarPage = new(Page, UrlBase);
+    //     EntrarPage entrarPage = new(Page, UrlBase);
 
-        await entrarPage.IrParaAsync();
-        await entrarPage.PreencherAsync(email, senha);
-        await entrarPage.ConfirmarAsync();
-    }
+    //     await entrarPage.IrParaAsync();
+    //     await entrarPage.PreencherAsync(email, senha);
+    //     await entrarPage.ConfirmarAsync();
+    // }
 }
