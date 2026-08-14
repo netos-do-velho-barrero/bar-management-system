@@ -10,6 +10,16 @@ public class Mesa : EntidadeBase<Mesa>, IEntidadeDoUsuario
     public StatusMesa Status { get; set; } = StatusMesa.Livre;
     public Guid UserId { get; set; }
 
+    public Mesa()
+    {
+    }
+
+    public Mesa(int numero, int quantidadeLugares)
+    {
+        Numero = numero;
+        QuantidadeLugares = quantidadeLugares;
+    }
+
     public override List<string> Validar()
     {
         List<string> erros = [];

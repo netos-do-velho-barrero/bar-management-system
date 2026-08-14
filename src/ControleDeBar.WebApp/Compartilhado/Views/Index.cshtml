@@ -3,21 +3,35 @@
     ViewBag.Titulo = "Página Inicial";
 }
 
-<div class="row g-2">
+<div class="row g-4">
     <div class="col-lg-7">
-        <h1 class="display-5 fw-semibold mb-3">Controle De Bar</h1>
+        <h1 class="display-5 fw-semibold mb-3">
+            Controle De Bar
+        </h1>
+
         <p class="lead text-secondary mb-4">
-            Gerencie mesas, garçons, produtos e contas do seu estabelecimento de forma simples e eficiente.
+            Gerencie mesas, garçons, produtos e contas do seu estabelecimento
+            de forma simples e eficiente.
         </p>
     </div>
 
     <div class="col-lg-5">
         <div class="card border-primary-subtle shadow-sm">
             <div class="card-body p-4">
-                <h3 class="h5 text-primary mb-3">Módulos disponíveis</h3>
+                <h3 class="h5 text-primary mb-3">
+                    Módulos disponíveis
+                </h3>
 
                 <div class="list-group">
-                    <span class="text-muted small">Nenhum módulo cadastrado até o momento.</span>
+                    <a asp-controller="Mesa" asp-action="Listar" class="list-group-item list-group-item-action">
+                        <div class="fw-semibold">
+                            Mesas
+                        </div>
+
+                        <small class="text-muted">
+                            Cadastre, edite, consulte e exclua mesas.
+                        </small>
+                    </a>
                 </div>
             </div>
         </div>

@@ -1,5 +1,7 @@
+using ControleDeBar.Dominio.Modulos.ModuloMesa;
 using ControleDeBar.Infra.Compartilhado.Logging;
 using ControleDeBar.Infra.Compartilhado.Orm;
+using ControleDeBar.Infra.Modulos.ModuloMesa;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -58,9 +60,13 @@ public static class InjecaoDeDependencia
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.AllowedForNewUsers = true;
         })
-        .AddRoles<IdentityRole<Guid>>() // Configuração de Cargos/Papéis no Identity
-        .AddEntityFrameworkStores<ControleDeBarDbContext>() // Integração com EntityFramework
-        .AddSignInManager() // Configuração do SignInManager
+        .AddRoles<IdentityRole<Guid>>()
+        .AddEntityFrameworkStores<ControleDeBarDbContext>()
+        .AddSignInManager()
         .AddDefaultTokenProviders();
+
+        // Repositórios
+        services.AddScoped<IRepositorioMesa, RepositorioMesaEmOrm>();
     }
 }
+

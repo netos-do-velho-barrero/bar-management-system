@@ -1,0 +1,35 @@
+@model ControleDeBar.WebApp.Modulos.ModuloMesa.CadastrarMesaViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar Mesa";
+}
+
+<h1>Cadastrar Mesa</h1>
+
+<form asp-action="Cadastrar" method="post">
+
+    <div class="mb-3">
+        <label asp-for="Numero" class="form-label"></label>
+        <input asp-for="Numero" class="form-control" />
+        <span asp-validation-for="Numero" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="QuantidadeLugares" class="form-label"></label>
+        <input asp-for="QuantidadeLugares" class="form-control" />
+        <span asp-validation-for="QuantidadeLugares" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Cadastrar
+    </button>
+
+    <a asp-action="Listar" class="btn btn-secondary">
+        Voltar
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

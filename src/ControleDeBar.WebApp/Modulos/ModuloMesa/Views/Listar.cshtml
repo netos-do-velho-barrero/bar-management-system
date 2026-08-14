@@ -1,0 +1,46 @@
+@using ControleDeBar.WebApp.Modulos.ModuloMesa
+@model List<ControleDeBar.WebApp.Modulos.ModuloMesa.ListarMesaViewModel>
+
+@{
+    ViewData["Title"] = "Mesas";
+}
+
+<h1>Mesas</h1>
+
+<p>
+    <a asp-action="Cadastrar" class="btn btn-primary">Cadastrar mesa</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Quantidade de lugares</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ListarMesaViewModel mesa in Model)
+        {
+            <tr>
+                <td>@mesa.Numero</td>
+                <td>@mesa.QuantidadeLugares</td>
+                <td>@mesa.Status</td>
+                <td>
+                    <a asp-action="Detalhes" asp-route-id="@mesa.Id" class="btn btn-info">
+                        Detalhes
+                    </a>
+
+                    <a asp-action="Editar" asp-route-id="@mesa.Id" class="btn btn-warning">
+                        Editar
+                    </a>
+
+                    <a asp-action="Excluir" asp-route-id="@mesa.Id" class="btn btn-danger">
+                        Excluir
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

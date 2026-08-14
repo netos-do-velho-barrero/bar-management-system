@@ -1,3 +1,4 @@
+using ControleDeBar.Aplicacao.Modulos.ModuloMesa;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,6 @@ public static class InjecaoDeDependencia
         IConfiguration configuration
     )
     {
-
+        services.AddScoped<ServicoMesa>();
     }
 }
