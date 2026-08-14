@@ -11,7 +11,10 @@ public class ServicoMesa(
     public Result Cadastrar(CadastrarMesaDto dto)
     {
         if (ExisteMesaComMesmoNumero(dto.Numero))
-            return Falha(nameof(dto.Numero), "Já existe uma mesa com este número.");
+            return Falha(
+                nameof(dto.Numero),
+                "Já existe uma mesa com este número."
+            );
 
         Mesa novaMesa = new(
             dto.Numero,
@@ -31,7 +34,10 @@ public class ServicoMesa(
     public Result Editar(EditarMesaDto dto)
     {
         if (ExisteMesaComMesmoNumero(dto.Numero, dto.Id))
-            return Falha(nameof(dto.Numero), "Já existe uma mesa com este número.");
+            return Falha(
+                nameof(dto.Numero),
+                "Já existe uma mesa com este número."
+            );
 
         Mesa mesaAtualizada = new(
             dto.Numero,
@@ -67,7 +73,10 @@ public class ServicoMesa(
                 "Não é possível excluir uma mesa ocupada."
             );
 
-        repositorioMesa.Excluir(id);
+        bool conseguiuExcluir = repositorioMesa.Excluir(id);
+
+        if (!conseguiuExcluir)
+            return Falha(string.Empty, "Não foi possível excluir a mesa.");
 
         return Result.Ok();
     }
