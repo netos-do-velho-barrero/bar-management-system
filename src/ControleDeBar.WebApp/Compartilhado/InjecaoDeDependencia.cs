@@ -43,6 +43,9 @@ public static class InjecaoDeDependencia
                 .Build();
         });
 
+        services.AddHttpContextAccessor();
+        services.AddScoped<IProvedorDeUsuario, ProvedorDeUsuario>();
+
         services.AddAutoMapper(mapperConfig =>
         {
             AutoMapperOptions autoMapperOptions = configuration
