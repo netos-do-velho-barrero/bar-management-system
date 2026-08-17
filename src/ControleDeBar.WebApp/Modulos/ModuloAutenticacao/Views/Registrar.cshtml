@@ -19,7 +19,8 @@
 
         <div class="auth-body">
             <form asp-action="Registrar" method="post" novalidate>
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show"
+                     role="alert">
                     <i class="bi bi-exclamation-circle me-2"></i>
                     <div asp-validation-summary="ModelOnly"></div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
@@ -29,10 +30,7 @@
                     <label asp-for="Email" class="form-label">
                         <i class="bi bi-envelope me-2 text-primary"></i>E-mail
                     </label>
-                    <input asp-for="Email" 
-                           type="email" 
-                           class="form-control form-control-lg" 
-                           placeholder="seu@email.com"
+                    <input asp-for="Email" type="email" class="form-control form-control-lg" placeholder="seu@email.com"
                            autocomplete="email">
                     <span asp-validation-for="Email" class="invalid-feedback d-block mt-2"></span>
                     <small class="text-muted d-block mt-2">
@@ -44,10 +42,7 @@
                     <label asp-for="Senha" class="form-label">
                         <i class="bi bi-lock me-2 text-primary"></i>Senha
                     </label>
-                    <input asp-for="Senha" 
-                           type="password" 
-                           class="form-control form-control-lg" 
-                           placeholder="••••••••"
+                    <input asp-for="Senha" type="password" class="form-control form-control-lg" placeholder="••••••••"
                            autocomplete="new-password">
                     <span asp-validation-for="Senha" class="invalid-feedback d-block mt-2"></span>
                     <small class="text-muted d-block mt-2">
@@ -59,11 +54,8 @@
                     <label asp-for="ConfirmarSenha" class="form-label">
                         <i class="bi bi-lock-fill me-2 text-primary"></i>Confirmar Senha
                     </label>
-                    <input asp-for="ConfirmarSenha" 
-                           type="password" 
-                           class="form-control form-control-lg" 
-                           placeholder="••••••••"
-                           autocomplete="new-password">
+                    <input asp-for="ConfirmarSenha" type="password" class="form-control form-control-lg"
+                           placeholder="••••••••" autocomplete="new-password">
                     <span asp-validation-for="ConfirmarSenha" class="invalid-feedback d-block mt-2"></span>
                 </div>
 

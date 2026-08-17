@@ -43,7 +43,7 @@ else
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <h5 class="card-title fw-bold text-dark mb-0">@p.Nome</h5>
                         </div>
-                        
+
                         <div class="mb-3 p-3 bg-info-subtle rounded-3 text-center">
                             <span class="badge bg-info text-dark rounded-2 p-2" style="font-size: 1.2rem;">
                                 @p.PrecoVenda.ToString("C")
@@ -56,22 +56,16 @@ else
                         </small>
 
                         <div class="mt-auto d-flex flex-wrap gap-2">
-                            <a class="btn btn-outline-secondary btn-sm rounded-2 flex-grow-1" 
-                               asp-action="Detalhes" 
-                               asp-route-id="@p.Id"
-                               title="Visualizar detalhes">
+                            <a class="btn btn-outline-secondary btn-sm rounded-2 flex-grow-1" asp-action="Detalhes"
+                               asp-route-id="@p.Id" title="Visualizar detalhes">
                                 <i class="bi bi-eye me-1"></i>Ver
                             </a>
-                            <a class="btn btn-outline-primary btn-sm rounded-2 flex-grow-1" 
-                               asp-action="Editar" 
-                               asp-route-id="@p.Id"
-                               title="Editar produto">
+                            <a class="btn btn-outline-primary btn-sm rounded-2 flex-grow-1" asp-action="Editar"
+                               asp-route-id="@p.Id" title="Editar produto">
                                 <i class="bi bi-pencil me-1"></i>Editar
                             </a>
-                            <a class="btn btn-outline-danger btn-sm rounded-2 flex-grow-1" 
-                               asp-action="Excluir" 
-                               asp-route-id="@p.Id"
-                               title="Excluir produto">
+                            <a class="btn btn-outline-danger btn-sm rounded-2 flex-grow-1" asp-action="Excluir"
+                               asp-route-id="@p.Id" title="Excluir produto">
                                 <i class="bi bi-trash me-1"></i>Excluir
                             </a>
                         </div>
@@ -83,6 +77,7 @@ else
 
     <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
         <i class="bi bi-shield-check me-2"></i>
-        <strong>Privacidade Garantida:</strong> Você só vê produtos do seu bar. Nenhum outro usuário tem acesso ao seu cardápio.
+        <strong>Privacidade Garantida:</strong> Você só vê produtos do seu bar. Nenhum outro usuário tem acesso ao seu
+        cardápio.
     </div>
 }

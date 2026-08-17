@@ -136,7 +136,7 @@
             <div>
                 <h5 class="alert-heading">Sistema Multi-Usuário Seguro</h5>
                 <p class="mb-0">
-                    Seus dados estão 100% seguros e isolados. Cada bar é um ambiente independente. 
+                    Seus dados estão 100% seguros e isolados. Cada bar é um ambiente independente.
                     Nenhum outro usuário consegue acessar suas informações, mesas, garçons ou contas.
                 </p>
             </div>
@@ -156,7 +156,7 @@ else
                 Controle seu bar com facilidade
             </h1>
             <p class="lead text-muted mb-4">
-                Sistema seguro para gerenciar mesas, atendimentos, cardápio e fechamento de contas. 
+                Sistema seguro para gerenciar mesas, atendimentos, cardápio e fechamento de contas.
                 Cada bar é um ambiente isolado com total segurança.
             </p>
 
@@ -164,7 +164,8 @@ else
                 <a asp-controller="Autenticacao" asp-action="Entrar" class="btn btn-primary btn-lg rounded-3 px-5 fw-bold">
                     <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
                 </a>
-                <a asp-controller="Autenticacao" asp-action="Registrar" class="btn btn-outline-primary btn-lg rounded-3 px-5 fw-bold">
+                <a asp-controller="Autenticacao" asp-action="Registrar"
+                   class="btn btn-outline-primary btn-lg rounded-3 px-5 fw-bold">
                     <i class="bi bi-person-plus me-2"></i>Criar Conta
                 </a>
             </div>
@@ -267,59 +268,63 @@ else
     </div>
 }
 
-                    <a asp-controller="Garcom" asp-action="Listar" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="p-2 bg-success-subtle text-success rounded-3">
-                                <i class="bi bi-person-badge fs-4"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold text-dark">Garçons</div>
-                                <small class="text-muted">Gerencie a equipe de atendimento do bar.</small>
-                            </div>
-                        </div>
-                        <i class="bi bi-chevron-right text-muted"></i>
-                    </a>
-
-                    <a asp-controller="Produto" asp-action="Listar" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="p-2 bg-warning-subtle text-warning-emphasis rounded-3">
-                                <i class="bi bi-box-seam fs-4"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold text-dark">Produtos</div>
-                                <small class="text-muted">Cadastre itens e preços do cardápio.</small>
-                            </div>
-                        </div>
-                        <i class="bi bi-chevron-right text-muted"></i>
-                    </a>
-
-                    <a asp-controller="Conta" asp-action="Listar" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="p-2 bg-info-subtle text-info-emphasis rounded-3">
-                                <i class="bi bi-receipt fs-4"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold text-dark">Contas</div>
-                                <small class="text-muted">Abra, adicione pedidos e encerre comandas.</small>
-                            </div>
-                        </div>
-                        <i class="bi bi-chevron-right text-muted"></i>
-                    </a>
-
-                    <a asp-controller="Faturamento" asp-action="Diario" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="p-2 bg-danger-subtle text-danger rounded-3">
-                                <i class="bi bi-graph-up-arrow fs-4"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold text-dark">Faturamento Diário</div>
-                                <small class="text-muted">Acompanhe métricas, relatórios e totais por data.</small>
-                            </div>
-                        </div>
-                        <i class="bi bi-chevron-right text-muted"></i>
-                    </a>
-                </div>
-            </div>
+<a asp-controller="Garcom" asp-action="Listar"
+   class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+        <div class="p-2 bg-success-subtle text-success rounded-3">
+            <i class="bi bi-person-badge fs-4"></i>
+        </div>
+        <div>
+            <div class="fw-bold text-dark">Garçons</div>
+            <small class="text-muted">Gerencie a equipe de atendimento do bar.</small>
         </div>
     </div>
+    <i class="bi bi-chevron-right text-muted"></i>
+</a>
+
+<a asp-controller="Produto" asp-action="Listar"
+   class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+        <div class="p-2 bg-warning-subtle text-warning-emphasis rounded-3">
+            <i class="bi bi-box-seam fs-4"></i>
+        </div>
+        <div>
+            <div class="fw-bold text-dark">Produtos</div>
+            <small class="text-muted">Cadastre itens e preços do cardápio.</small>
+        </div>
+    </div>
+    <i class="bi bi-chevron-right text-muted"></i>
+</a>
+
+<a asp-controller="Conta" asp-action="Listar"
+   class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+        <div class="p-2 bg-info-subtle text-info-emphasis rounded-3">
+            <i class="bi bi-receipt fs-4"></i>
+        </div>
+        <div>
+            <div class="fw-bold text-dark">Contas</div>
+            <small class="text-muted">Abra, adicione pedidos e encerre comandas.</small>
+        </div>
+    </div>
+    <i class="bi bi-chevron-right text-muted"></i>
+</a>
+
+<a asp-controller="Faturamento" asp-action="Diario"
+   class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+        <div class="p-2 bg-danger-subtle text-danger rounded-3">
+            <i class="bi bi-graph-up-arrow fs-4"></i>
+        </div>
+        <div>
+            <div class="fw-bold text-dark">Faturamento Diário</div>
+            <small class="text-muted">Acompanhe métricas, relatórios e totais por data.</small>
+        </div>
+    </div>
+    <i class="bi bi-chevron-right text-muted"></i>
+</a>
+</div>
+</div>
+</div>
+</div>
 </div>

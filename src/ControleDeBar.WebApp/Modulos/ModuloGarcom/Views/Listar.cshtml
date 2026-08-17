@@ -43,22 +43,16 @@ else
                         </div>
 
                         <div class="mt-auto d-flex flex-wrap gap-2">
-                            <a asp-action="Detalhes" 
-                               asp-route-id="@garcom.Id" 
-                               class="btn btn-sm btn-outline-secondary rounded-2 flex-grow-1"
-                               title="Visualizar detalhes">
+                            <a asp-action="Detalhes" asp-route-id="@garcom.Id"
+                               class="btn btn-sm btn-outline-secondary rounded-2 flex-grow-1" title="Visualizar detalhes">
                                 <i class="bi bi-eye me-1"></i>Ver
                             </a>
-                            <a asp-action="Editar" 
-                               asp-route-id="@garcom.Id" 
-                               class="btn btn-sm btn-outline-primary rounded-2 flex-grow-1"
-                               title="Editar garçom">
+                            <a asp-action="Editar" asp-route-id="@garcom.Id"
+                               class="btn btn-sm btn-outline-primary rounded-2 flex-grow-1" title="Editar garçom">
                                 <i class="bi bi-pencil me-1"></i>Editar
                             </a>
-                            <a asp-action="Excluir" 
-                               asp-route-id="@garcom.Id" 
-                               class="btn btn-sm btn-outline-danger rounded-2 flex-grow-1"
-                               title="Excluir garçom">
+                            <a asp-action="Excluir" asp-route-id="@garcom.Id"
+                               class="btn btn-sm btn-outline-danger rounded-2 flex-grow-1" title="Excluir garçom">
                                 <i class="bi bi-trash me-1"></i>Excluir
                             </a>
                         </div>
@@ -70,6 +64,7 @@ else
 
     <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
         <i class="bi bi-shield-check me-2"></i>
-        <strong>Privacidade Garantida:</strong> Você só vê garçons do seu bar. Nenhum outro usuário tem acesso a essas informações.
+        <strong>Privacidade Garantida:</strong> Você só vê garçons do seu bar. Nenhum outro usuário tem acesso a essas
+        informações.
     </div>
 }

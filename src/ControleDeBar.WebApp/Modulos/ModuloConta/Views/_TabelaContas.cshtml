@@ -53,7 +53,8 @@ else
                         </td>
                         <td>
                             <small class="text-muted">
-                                @conta.DataAbertura.ToString("dd/MM/yyyy<br/>HH:mm", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
+                                @conta.DataAbertura.ToString("dd/MM/yyyy<br/>HH:mm",
+                        System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
                             </small>
                         </td>
                         <td>
@@ -75,26 +76,20 @@ else
                         </td>
                         <td>
                             <div class="d-flex gap-2 justify-content-end">
-                                <a asp-action="Detalhes" 
-                                   asp-route-id="@conta.Id" 
-                                   class="btn btn-sm btn-outline-secondary rounded-2"
-                                   title="Visualizar detalhes">
+                                <a asp-action="Detalhes" asp-route-id="@conta.Id"
+                                   class="btn btn-sm btn-outline-secondary rounded-2" title="Visualizar detalhes">
                                     <i class="bi bi-eye"></i>
                                 </a>
 
                                 @if (conta.Situacao == "Aberta")
                                 {
-                                    <a asp-action="Editar" 
-                                       asp-route-id="@conta.Id" 
-                                       class="btn btn-sm btn-outline-primary rounded-2"
+                                    <a asp-action="Editar" asp-route-id="@conta.Id" class="btn btn-sm btn-outline-primary rounded-2"
                                        title="Editar conta">
                                         <i class="bi bi-pencil"></i>
                                     </a>
 
-                                    <a asp-action="ConfirmarFechamento" 
-                                       asp-route-id="@conta.Id" 
-                                       class="btn btn-sm btn-outline-success rounded-2"
-                                       title="Fechar conta">
+                                    <a asp-action="ConfirmarFechamento" asp-route-id="@conta.Id"
+                                       class="btn btn-sm btn-outline-success rounded-2" title="Fechar conta">
                                         <i class="bi bi-check-circle"></i>
                                     </a>
                                 }

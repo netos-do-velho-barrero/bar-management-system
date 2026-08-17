@@ -28,14 +28,17 @@ else
 {
     <!-- Abas de Filtro -->
     <div class="nav nav-tabs mb-4" id="filtroContas" role="tablist">
-        <button class="nav-link active" id="todas-tab" data-bs-toggle="tab" data-bs-target="#todas" type="button" role="tab">
+        <button class="nav-link active" id="todas-tab" data-bs-toggle="tab" data-bs-target="#todas" type="button"
+                role="tab">
             <i class="bi bi-list me-2"></i>Todas <span class="badge bg-primary ms-2">@Model.Count</span>
         </button>
         <button class="nav-link" id="abertas-tab" data-bs-toggle="tab" data-bs-target="#abertas" type="button" role="tab">
-            <i class="bi bi-unlock me-2"></i>Abertas <span class="badge bg-success ms-2">@Model.Where(c => c.Situacao == "Aberta").Count()</span>
+            <i class="bi bi-unlock me-2"></i>Abertas <span class="badge bg-success ms-2">@Model.Where(c => c.Situacao ==
+                   "Aberta").Count()</span>
         </button>
         <button class="nav-link" id="fechadas-tab" data-bs-toggle="tab" data-bs-target="#fechadas" type="button" role="tab">
-            <i class="bi bi-lock me-2"></i>Fechadas <span class="badge bg-danger ms-2">@Model.Where(c => c.Situacao == "Fechada").Count()</span>
+            <i class="bi bi-lock me-2"></i>Fechadas <span class="badge bg-danger ms-2">@Model.Where(c => c.Situacao ==
+                    "Fechada").Count()</span>
         </button>
     </div>
 
@@ -59,16 +62,17 @@ else
 
     <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
         <i class="bi bi-shield-check me-2"></i>
-        <strong>Privacidade Garantida:</strong> Você só vê contas do seu bar. Nenhum outro usuário tem acesso a essas informações.
+        <strong>Privacidade Garantida:</strong> Você só vê contas do seu bar. Nenhum outro usuário tem acesso a essas
+        informações.
     </div>
 }
-                        }
+}
 
-                    </td>
-                </tr>
-            }
+</td>
+</tr>
+}
 
-        </tbody>
+</tbody>
 
-    </table>
+</table>
 }

@@ -11,12 +11,8 @@
             <label for="data" class="form-label fw-semibold mb-2">
                 <i class="bi bi-calendar3 me-2 text-primary"></i>Selecione a Data
             </label>
-            <input type="date" 
-                   id="data" 
-                   name="data" 
-                   value="@Model.Data.ToString("yyyy-MM-dd")" 
-                   class="form-control rounded-3" 
-                   style="width: 220px;" />
+            <input type="date" id="data" name="data" value="@Model.Data.ToString("yyyy-MM-dd")"
+                   class="form-control rounded-3" style="width: 220px;" />
         </div>
         <button type="submit" class="btn btn-primary rounded-3 px-4">
             <i class="bi bi-search me-2"></i>Filtrar
@@ -142,11 +138,8 @@
                                     <strong class="text-success">@item.ValorTotal.ToString("C")</strong>
                                 </td>
                                 <td class="text-end">
-                                    <a asp-controller="Conta" 
-                                       asp-action="Detalhes" 
-                                       asp-route-id="@item.Id" 
-                                       class="btn btn-sm btn-outline-primary rounded-2"
-                                       title="Ver detalhes da conta">
+                                    <a asp-controller="Conta" asp-action="Detalhes" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-primary rounded-2" title="Ver detalhes da conta">
                                         <i class="bi bi-eye me-1"></i>Ver
                                     </a>
                                 </td>
@@ -169,7 +162,8 @@
 
             <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
                 <i class="bi bi-shield-check me-2"></i>
-                <strong>Privacidade Garantida:</strong> Você só vê faturamento do seu bar. Nenhum outro usuário tem acesso a essas informações financeiras.
+                <strong>Privacidade Garantida:</strong> Você só vê faturamento do seu bar. Nenhum outro usuário tem acesso a
+                essas informações financeiras.
             </div>
         }
     </div>
