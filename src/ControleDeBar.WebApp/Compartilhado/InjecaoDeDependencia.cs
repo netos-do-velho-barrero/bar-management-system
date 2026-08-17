@@ -4,6 +4,8 @@ using ControleDeBar.WebApp.Compartilhado.Mapping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
+
+
 namespace ControleDeBar.WebApp.Compartilhado;
 
 public static class InjecaoDeDependencia
@@ -59,5 +61,6 @@ public static class InjecaoDeDependencia
 
             mapperConfig.AddMaps(typeof(Program));
         });
+
     }
 }

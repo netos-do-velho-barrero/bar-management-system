@@ -7,11 +7,8 @@
 <h1>Detalhes da Conta</h1>
 
 <div class="card mb-4">
-
     <div class="card-body">
-
         <dl class="row">
-
             <dt class="col-sm-3">
                 Mesa
             </dt>
@@ -41,7 +38,7 @@
             </dt>
 
             <dd class="col-sm-9">
-                @Model.DataAbertura.ToString("dd/MM/yyyy HH:mm")
+                @Model.DataAbertura.ToString("dd/MM/yyyy")
             </dd>
 
             <dt class="col-sm-3">
@@ -59,7 +56,6 @@
             <dd class="col-sm-9">
                 @Model.ValorTotal.ToString("C")
             </dd>
-
         </dl>
 
         @if (Model.Situacao == "Aberta")
@@ -69,69 +65,20 @@
             </a>
 
             <form asp-action="Fechar" asp-route-id="@Model.Id" method="post" class="d-inline">
-
                 <button type="submit" class="btn btn-success">
                     Fechar Conta
                 </button>
-
             </form>
         }
 
         <a asp-action="Listar" class="btn btn-secondary">
             Voltar
         </a>
-
     </div>
-
 </div>
 
-<h2>Pedidos</h2>
-
-@if (Model.Pedidos.Count == 0)
-{
-    <div class="alert alert-info">
-        Nenhum pedido registrado nesta conta.
-    </div>
-}
-else
-{
-    <table class="table table-striped">
-
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Preço Unitário</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @foreach (var pedido in Model.Pedidos)
-            {
-                <tr>
-
-                    <td>
-                        @pedido.NomeProduto
-                    </td>
-
-                    <td>
-                        @pedido.Quantidade
-                    </td>
-
-                    <td>
-                        @pedido.PrecoUnitario.ToString("C")
-                    </td>
-
-                    <td>
-                        @pedido.Subtotal.ToString("C")
-                    </td>
-
-                </tr>
-            }
-
-        </tbody>
-
-    </table>
-}
+@* Substitui o bloco antigo de <h2>Pedidos</h2> + tabela somente-leitura pela
+   partial, que já traz: botão "Adicionar Produto", form de editar quantidade
+   inline e botão "Remover" por item — tudo condicionado a Situacao == "Aberta"
+   dentro da própria partial, então não precisa repetir esse if aqui. *@
+@await Html.PartialAsync("~/Views/PedidoConta/_ListaPedidosDaConta.cshtml", Model)

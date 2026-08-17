@@ -1,0 +1,20 @@
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Detalhes do Produto";
+}
+@model DetalhesProdutoViewModel;
+<div class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;">
+    <dl class="row mb-0">
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">ID</dt>
+        <dd class="col-sm-8 text-break">@Model.Id</dd>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Nome</dt>
+        <dd class="col-sm-8">@Model.Nome</dd>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Preço de Venda</dt>
+        <dd class="col-sm-8">@Model.PrecoVenda.ToString("C")</dd>
+    </dl>
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">Voltar</a>
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Editar" asp-route-id="@Model.Id">Editar</a>
+        <a class="btn btn-outline-danger rounded-pill px-4" asp-action="Excluir" asp-route-id="@Model.Id">Excluir</a>
+    </div>
+</div>
