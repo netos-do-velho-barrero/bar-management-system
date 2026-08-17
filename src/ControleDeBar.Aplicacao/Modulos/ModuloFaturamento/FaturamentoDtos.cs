@@ -1,8 +1,7 @@
 namespace ControleDeBar.Aplicacao.Modulos.ModuloFaturamento;
 
-public record FaturamentoDiarioDto(
+public record FaturamentoDto(
     DateTime Data,
-    decimal ValorTotal,
-    int QuantidadeContasFechadas
+    decimal TotalFaturado,
+    int QuantidadeContas
 );
- 

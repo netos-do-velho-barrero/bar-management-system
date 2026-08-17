@@ -1,65 +1,103 @@
 @{
     Layout = "_Layout";
-    ViewBag.Titulo = "Página Inicial";
+    ViewBag.Titulo = "";
 }
 
-<div class="row g-4">
-    <div class="col-lg-7">
-        <h1 class="display-5 fw-semibold mb-3">
-            Controle De Bar
+<div class="row align-items-center g-5 py-3">
+    <!-- Lado Esquerdo: Banner de Boas-vindas -->
+    <div class="col-lg-6">
+        <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-semibold">
+            <i class="bi bi-speedometer2 me-1"></i> Painel Geral
+        </span>
+        <h1 class="display-5 fw-bold text-dark mb-3">
+            Gestão Inteligente para o seu Bar
         </h1>
-
-        <p class="lead text-secondary mb-4">
-            Gerencie mesas, garçons, produtos e contas do seu estabelecimento
-            de forma simples e eficiente.
+        <p class="lead text-muted mb-4">
+            Controle mesas, atendimentos, cardápio e fechamento de contas em uma única plataforma simples e rápida.
         </p>
+
+        <div class="d-flex gap-3">
+            <a asp-controller="Conta" asp-action="Listar" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
+                <i class="bi bi-receipt me-2"></i> Ver Contas Ativas
+            </a>
+            <a asp-controller="Faturamento" asp-action="Diario" class="btn btn-outline-secondary btn-lg rounded-pill px-4">
+                <i class="bi bi-graph-up-arrow me-2"></i> Faturamento
+            </a>
+        </div>
     </div>
 
-    <div class="col-lg-5">
-        <div class="card border-primary-subtle shadow-sm">
+    <!-- Lado Direito: Módulos do Sistema -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4">
             <div class="card-body p-4">
-                <h3 class="h5 text-primary mb-3">
-                    Módulos disponíveis
-                </h3>
+                <h2 class="h5 fw-bold text-dark mb-3">
+                    <i class="bi bi-grid-fill text-primary me-2"></i> Módulos do Sistema
+                </h2>
 
-                <div class="list-group">
-                    <a asp-controller="Mesa" asp-action="Listar" class="list-group-item list-group-item-action">
-                        <div class="fw-semibold">
-                            Mesas
+                <div class="list-group list-group-flush gap-2">
+                    <a asp-controller="Mesa" asp-action="Listar" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-2 bg-primary-subtle text-primary rounded-3">
+                                <i class="bi bi-grid-3x3-gap fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">Mesas</div>
+                                <small class="text-muted">Cadastre e gerencie a ocupação das mesas.</small>
+                            </div>
                         </div>
-
-                        <small class="text-muted">
-                            Cadastre, edite, consulte e exclua mesas.
-                        </small>
+                        <i class="bi bi-chevron-right text-muted"></i>
                     </a>
 
-                    <a asp-controller="Garcom" asp-action="Listar" class="list-group-item list-group-item-action">
-                        <div class="fw-semibold">
-                            Garçons
+                    <a asp-controller="Garcom" asp-action="Listar" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-2 bg-success-subtle text-success rounded-3">
+                                <i class="bi bi-person-badge fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">Garçons</div>
+                                <small class="text-muted">Gerencie a equipe de atendimento do bar.</small>
+                            </div>
                         </div>
-
-                        <small class="text-muted">
-                            Cadastre, edite, consulte e exclua garçons.
-                        </small>
+                        <i class="bi bi-chevron-right text-muted"></i>
                     </a>
 
-                    <a asp-controller="Conta" asp-action="Listar" class="list-group-item list-group-item-action">
-                        <div class="fw-semibold">
-                            Contas
+                    <a asp-controller="Produto" asp-action="Listar" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-2 bg-warning-subtle text-warning-emphasis rounded-3">
+                                <i class="bi bi-box-seam fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">Produtos</div>
+                                <small class="text-muted">Cadastre itens e preços do cardápio.</small>
+                            </div>
                         </div>
-
-                        <small class="text-muted">
-                            Abra, edite, consulte e feche contas.
-                        </small>
+                        <i class="bi bi-chevron-right text-muted"></i>
                     </a>
-                     <a asp-controller="Produto" asp-action="Listar" class="list-group-item list-group-item-action">
-                        <div class="fw-semibold">
-                            Produtos
-                        </div>
 
-                        <small class="text-muted">
-                            Cadastre, edite, consulte e exclua Produtos.
-                        </small>
+                    <a asp-controller="Conta" asp-action="Listar" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-2 bg-info-subtle text-info-emphasis rounded-3">
+                                <i class="bi bi-receipt fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">Contas</div>
+                                <small class="text-muted">Abra, adicione pedidos e encerre comandas.</small>
+                            </div>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </a>
+
+                    <a asp-controller="Faturamento" asp-action="Diario" class="list-group-item list-group-item-action border rounded-3 p-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-2 bg-danger-subtle text-danger rounded-3">
+                                <i class="bi bi-graph-up-arrow fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">Faturamento Diário</div>
+                                <small class="text-muted">Acompanhe métricas, relatórios e totais por data.</small>
+                            </div>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
                     </a>
                 </div>
             </div>

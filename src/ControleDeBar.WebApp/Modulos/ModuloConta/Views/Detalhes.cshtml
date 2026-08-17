@@ -81,4 +81,4 @@
    partial, que já traz: botão "Adicionar Produto", form de editar quantidade
    inline e botão "Remover" por item — tudo condicionado a Situacao == "Aberta"
    dentro da própria partial, então não precisa repetir esse if aqui. *@
-@await Html.PartialAsync("~/Views/PedidoConta/_ListaPedidosDaConta.cshtml", Model)
+@await Html.PartialAsync("~/Modulos/ModuloPedidoConta/Views/Listar.cshtml", Model)

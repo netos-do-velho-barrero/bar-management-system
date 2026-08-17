@@ -1,0 +1,32 @@
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Adicionar Produto à Conta";
+}
+@model AdicionarPedidoContaViewModel;
+@{
+    List<OpcaoProdutoPedidoViewModel> produtos =
+        ViewBag.Produtos as List<OpcaoProdutoPedidoViewModel> ?? [];
+}
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Adicionar" method="post">
+    <input asp-for="ContaId" type="hidden">
+    <div class="mb-3">
+        <label asp-for="ProdutoId" class="form-label fw-semibold text-primary text-uppercase small">Produto</label>
+        <select asp-for="ProdutoId" class="form-select">
+            <option value="">Selecione um produto</option>
+            @foreach (OpcaoProdutoPedidoViewModel p in produtos)
+            {
+                <option value="@p.Id">@p.Nome — @p.PrecoVenda.ToString("C")</option>
+            }
+        </select>
+        <span asp-validation-for="ProdutoId" class="text-danger small fw-semibold"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Quantidade" class="form-label fw-semibold text-primary text-uppercase small">Quantidade</label>
+        <input asp-for="Quantidade" type="number" min="1" step="1" class="form-control" value="1">
+        <span asp-validation-for="Quantidade" class="text-danger small fw-semibold"></span>
+    </div>
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Conta" asp-action="Detalhes" asp-route-id="@Model.ContaId">Voltar</a>
+        <button class="btn btn-primary rounded-pill px-4" type="submit">Adicionar</button>
+    </div>
+</form>

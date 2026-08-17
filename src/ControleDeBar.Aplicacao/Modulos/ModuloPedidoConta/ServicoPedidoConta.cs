@@ -29,9 +29,6 @@ public class ServicoPedidoConta(
             return Falha(nameof(dto.ProdutoId), "Selecione um produto válido.");
         }
 
-        // PrecoUnitario é copiado de Produto.PrecoVenda no construtor de PedidoConta
-        // (snapshot), garantindo que alterações futuras no preço do produto não
-        // afetem pedidos já registrados.
         PedidoConta novoPedido = new(produto, dto.Quantidade)
         {
             Conta = conta
@@ -54,14 +51,12 @@ public class ServicoPedidoConta(
         if (pedido == null)
             return Falha(string.Empty, "Pedido não encontrado.");
 
-        if (pedido.Conta.Situacao == SituacaoConta.Fechada)
+        if (pedido.Conta?.Situacao == SituacaoConta.Fechada)
             return Falha(string.Empty, "Não é possível alterar pedidos de uma conta fechada.");
 
         if (dto.Quantidade <= 0)
             return Falha(nameof(dto.Quantidade), "O campo \"Quantidade\" deve ser um número positivo.");
 
-        // PedidoConta.Atualizar() só mapeia Quantidade — Produto e PrecoUnitario
-        // permanecem fixos, preservando o snapshot de preço já registrado.
         PedidoConta pedidoAtualizado = new() { Quantidade = dto.Quantidade };
 
         bool conseguiuEditar = repositorioPedidoConta.Editar(dto.Id, pedidoAtualizado);
@@ -79,7 +74,7 @@ public class ServicoPedidoConta(
         if (pedido == null)
             return Falha(string.Empty, "Pedido não encontrado.");
 
-        if (pedido.Conta.Situacao == SituacaoConta.Fechada)
+        if (pedido.Conta?.Situacao == SituacaoConta.Fechada)
             return Falha(string.Empty, "Não é possível remover pedidos de uma conta fechada.");
 
         repositorioPedidoConta.Excluir(id);

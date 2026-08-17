@@ -1,0 +1,92 @@
+@using ControleDeBar.WebApp.Modulos.ModuloConta
+@using ControleDeBar.WebApp.Modulos.ModuloPedidoConta
+@model DetalhesContaViewModel
+@{
+    bool contaAberta = Model.Situacao == "Aberta";
+}
+<div class="card border-primary-subtle shadow-sm mt-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">Pedidos</h5>
+            @if (contaAberta)
+            {
+                <a class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                   asp-controller="PedidoConta" asp-action="Adicionar" asp-route-contaId="@Model.Id">
+                    Adicionar Produto
+                </a>
+            }
+        </div>
+
+        @if (Model.Pedidos.Count == 0)
+        {
+            <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+                Nenhum pedido nesta conta ainda.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr class="text-secondary text-uppercase small">
+                            <th>Produto</th>
+                            <th class="text-center" style="width: 140px;">Quantidade</th>
+                            <th class="text-end">Preço Unit.</th>
+                            <th class="text-end">Subtotal</th>
+                            @if (contaAberta)
+                            {
+                                <th class="text-end" style="width: 90px;"></th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ItemPedidoDaContaViewModel item in Model.Pedidos)
+                        {
+                            <tr>
+                                <td>@item.NomeProduto</td>
+                                <td class="text-center">
+                                    @if (contaAberta)
+                                    {
+                                        <form asp-controller="PedidoConta" asp-action="EditarQuantidade" method="post" class="d-flex gap-1 justify-content-center">
+                                            <input type="hidden" name="Id" value="@item.Id">
+                                            <input type="hidden" name="ContaId" value="@Model.Id">
+                                            <input type="number" name="Quantidade" min="1" step="1" value="@item.Quantidade" class="form-control form-control-sm" style="width: 70px;">
+                                            <button class="btn btn-outline-primary btn-sm rounded-pill" type="submit" title="Atualizar quantidade">✓</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        @item.Quantidade
+                                    }
+                                </td>
+                                <td class="text-end">@item.PrecoUnitario.ToString("C")</td>
+                                <td class="text-end fw-semibold">@item.Subtotal.ToString("C")</td>
+                                @if (contaAberta)
+                                {
+                                    <td class="text-end">
+                                        <form asp-controller="PedidoConta" asp-action="Remover" method="post"
+                                              onsubmit="return confirm('Remover este item da conta?');">
+                                            <input type="hidden" name="id" value="@item.Id">
+                                            <input type="hidden" name="contaId" value="@Model.Id">
+                                            <button class="btn btn-outline-danger btn-sm rounded-pill px-3" type="submit">Remover</button>
+                                        </form>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end fw-semibold text-uppercase small text-primary">Total</td>
+                            <td class="text-end fw-bold">@Model.ValorTotal.ToString("C")</td>
+                            @if (contaAberta)
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+    </div>
+</div>
