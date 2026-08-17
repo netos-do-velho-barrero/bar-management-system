@@ -27,9 +27,16 @@ public class ServicoConta(
         Mesa mesa = resultadoMesa.Value;
 
         if (mesa.Status == StatusMesa.Ocupada)
-            return Falha(nameof(dto.MesaId), "Esta mesa já possui uma conta aberta.");
+            return Falha(
+                nameof(dto.MesaId),
+                "Esta mesa já possui uma conta aberta."
+            );
 
-        Conta novaConta = new(mesa, resultadoGarcom.Value, dto.NomeCliente);
+        Conta novaConta = new(
+            mesa,
+            resultadoGarcom.Value,
+            dto.NomeCliente
+        );
 
         Result resultadoValidacao = ValidarEntidade(novaConta);
 
@@ -38,63 +45,122 @@ public class ServicoConta(
 
         repositorioConta.Cadastrar(novaConta);
 
-        // Ao abrir a conta, a mesa passa para Ocupada.
-        repositorioMesa.AlterarStatus(mesa.Id, StatusMesa.Ocupada);
+        repositorioMesa.AlterarStatus(
+            mesa.Id,
+            StatusMesa.Ocupada
+        );
 
         return Result.Ok();
     }
 
     public Result Editar(EditarContaDto dto)
     {
-        Conta? contaExistente = repositorioConta.SelecionarPorId(dto.Id);
+        Conta? contaExistente =
+            repositorioConta.SelecionarPorId(dto.Id);
 
         if (contaExistente == null)
-            return Falha(string.Empty, "Conta não encontrada.");
+            return Falha(
+                string.Empty,
+                "Conta não encontrada."
+            );
 
         if (contaExistente.Situacao == SituacaoConta.Fechada)
-            return Falha(string.Empty, "Não é possível editar uma conta fechada.");
+            return Falha(
+                string.Empty,
+                "Não é possível editar uma conta fechada."
+            );
 
-        Result<Mesa> resultadoMesa = SelecionarMesa(dto.MesaId);
+        Result<Mesa> resultadoMesa =
+            SelecionarMesa(dto.MesaId);
 
         if (resultadoMesa.IsFailed)
             return resultadoMesa.ToResult();
 
-        Result<Garcom> resultadoGarcom = SelecionarGarcom(dto.GarcomId);
+        Result<Garcom> resultadoGarcom =
+            SelecionarGarcom(dto.GarcomId);
 
         if (resultadoGarcom.IsFailed)
             return resultadoGarcom.ToResult();
 
-        Conta contaAtualizada = new(resultadoMesa.Value, resultadoGarcom.Value, dto.NomeCliente);
+        Mesa novaMesa = resultadoMesa.Value;
 
-        Result resultadoValidacao = ValidarEntidade(contaAtualizada);
+        if (
+            novaMesa.Status == StatusMesa.Ocupada &&
+            novaMesa.Id != contaExistente.MesaId
+        )
+        {
+            return Falha(
+                nameof(dto.MesaId),
+                "Esta mesa já possui uma conta aberta."
+            );
+        }
+
+        Conta contaAtualizada = new(
+            novaMesa,
+            resultadoGarcom.Value,
+            dto.NomeCliente
+        );
+
+        Result resultadoValidacao =
+            ValidarEntidade(contaAtualizada);
 
         if (resultadoValidacao.IsFailed)
             return resultadoValidacao;
 
-        // Editar() só mapeia Mesa/Garcom/NomeCliente (Conta.Atualizar) — Situacao,
-        // DataAbertura e Pedidos permanecem intactos.
-        bool conseguiuEditar = repositorioConta.Editar(dto.Id, contaAtualizada);
+        bool conseguiuEditar =
+            repositorioConta.Editar(
+                dto.Id,
+                contaAtualizada
+            );
 
         if (!conseguiuEditar)
-            return Falha(string.Empty, "Conta não encontrada.");
+            return Falha(
+                string.Empty,
+                "Conta não encontrada."
+            );
+
+        if (contaExistente.MesaId != novaMesa.Id)
+        {
+            repositorioMesa.AlterarStatus(
+                contaExistente.MesaId,
+                StatusMesa.Livre
+            );
+
+            repositorioMesa.AlterarStatus(
+                novaMesa.Id,
+                StatusMesa.Ocupada
+            );
+        }
 
         return Result.Ok();
     }
 
     public Result Fechar(Guid id)
     {
-        Conta? conta = repositorioConta.SelecionarPorId(id);
+        Conta? conta =
+            repositorioConta.SelecionarPorId(id);
 
         if (conta == null)
-            return Falha(string.Empty, "Conta não encontrada.");
+            return Falha(
+                string.Empty,
+                "Conta não encontrada."
+            );
 
         if (conta.Situacao == SituacaoConta.Fechada)
-            return Falha(string.Empty, "Esta conta já está fechada.");
+            return Falha(
+                string.Empty,
+                "Esta conta já está fechada."
+            );
 
-        repositorioConta.AlterarSituacao(id, SituacaoConta.Fechada);
+        repositorioConta.AlterarSituacao(
+            id,
+            SituacaoConta.Fechada
+        );
 
-        // Ao fechar a conta, a mesa volta para Livre.
-        repositorioMesa.AlterarStatus(conta.Mesa.Id, StatusMesa.Livre);
+        repositorioMesa.AlterarStatus(
+            conta.Mesa.Id,
+            StatusMesa.Livre
+        );
 
         return Result.Ok();
     }
@@ -117,35 +183,65 @@ public class ServicoConta(
 
     public Result<DetalhesContaDto> SelecionarPorId(Guid id)
     {
-        Conta? conta = repositorioConta.SelecionarPorId(id);
+        Conta? conta =
+            repositorioConta.SelecionarPorId(id);
 
         if (conta == null)
-            return Result.Fail("Conta não encontrada.");
+            return Result.Fail(
+                "Conta não encontrada."
+            );
 
-        List<ItemPedidoDaContaDto> itens = conta.Pedidos
-            .Select(p => new ItemPedidoDaContaDto(p.Id, p.Produto.Nome, p.Quantidade, p.PrecoUnitario, p.Subtotal))
-            .ToList();
+        List<ItemPedidoDaContaDto> itens =
+            conta.Pedidos
+                .Select(p => new ItemPedidoDaContaDto(
+                    p.Id,
+                    p.Produto.Nome,
+                    p.Quantidade,
+                    p.PrecoUnitario,
+                    p.Subtotal
+                ))
+                .ToList();
 
-        return Result.Ok(new DetalhesContaDto(
-            conta.Id,
-            conta.Mesa.Id,
-            conta.Mesa.Numero,
-            conta.Garcom.Id,
-            conta.Garcom.Nome,
-            conta.NomeCliente,
-            conta.DataAbertura,
-            conta.Situacao.ToString(),
-            conta.ValorTotal,
-            itens
-        ));
+        return Result.Ok(
+            new DetalhesContaDto(
+                conta.Id,
+                conta.Mesa.Id,
+                conta.Mesa.Numero,
+                conta.Garcom.Id,
+                conta.Garcom.Nome,
+                conta.NomeCliente,
+                conta.DataAbertura,
+                conta.Situacao.ToString(),
+                conta.ValorTotal,
+                itens
+            )
+        );
     }
 
-    // Usado pela tela de Abrir Conta — só mesas livres podem receber uma nova conta.
-    public List<OpcaoMesaContaDto> SelecionarMesasDisponiveis()
+    public List<OpcaoMesaContaDto> SelecionarMesasDisponiveis(
+    Guid? contaId = null
+)
     {
+        Guid? mesaDaContaId = null;
+
+        if (contaId.HasValue)
+        {
+            Conta? conta =
+                repositorioConta.SelecionarPorId(contaId.Value);
+
+            mesaDaContaId = conta?.MesaId;
+        }
+
         return repositorioMesa
-            .Filtrar(m => m.Status == StatusMesa.Livre)
-            .Select(m => new OpcaoMesaContaDto(m.Id, m.Numero))
+            .SelecionarTodos()
+            .Where(m =>
+                m.Status == StatusMesa.Livre ||
+                m.Id == mesaDaContaId
+            )
+            .Select(m => new OpcaoMesaContaDto(
+                m.Id,
+                m.Numero
+            ))
             .ToList();
     }
 
@@ -153,19 +249,26 @@ public class ServicoConta(
     {
         return repositorioGarcom
             .SelecionarTodos()
-            .Select(g => new OpcaoGarcomContaDto(g.Id, g.Nome))
+            .Select(g => new OpcaoGarcomContaDto(
+                g.Id,
+                g.Nome
+            ))
             .ToList();
     }
 
     private Result<Mesa> SelecionarMesa(Guid mesaId)
     {
-        Mesa? mesa = repositorioMesa.SelecionarPorId(mesaId);
+        Mesa? mesa =
+            repositorioMesa.SelecionarPorId(mesaId);
 
         if (mesa == null)
         {
             return Result.Fail<Mesa>(
                 new Error("Selecione uma mesa válida.")
-                    .WithMetadata("Campo", nameof(AbrirContaDto.MesaId))
+                    .WithMetadata(
+                        "Campo",
+                        nameof(AbrirContaDto.MesaId)
+                    )
             );
         }
 
@@ -174,13 +277,17 @@ public class ServicoConta(
 
     private Result<Garcom> SelecionarGarcom(Guid garcomId)
     {
-        Garcom? garcom = repositorioGarcom.SelecionarPorId(garcomId);
+        Garcom? garcom =
+            repositorioGarcom.SelecionarPorId(garcomId);
 
         if (garcom == null)
         {
             return Result.Fail<Garcom>(
                 new Error("Selecione um garçom válido.")
-                    .WithMetadata("Campo", nameof(AbrirContaDto.GarcomId))
+                    .WithMetadata(
+                        "Campo",
+                        nameof(AbrirContaDto.GarcomId)
+                    )
             );
         }
 

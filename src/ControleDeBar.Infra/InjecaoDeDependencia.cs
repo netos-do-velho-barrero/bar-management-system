@@ -2,6 +2,10 @@ using ControleDeBar.Dominio.Modulos.ModuloMesa;
 using ControleDeBar.Infra.Compartilhado.Logging;
 using ControleDeBar.Infra.Compartilhado.Orm;
 using ControleDeBar.Infra.Modulos.ModuloMesa;
+using ControleDeBar.Dominio.Modulos.ModuloGarcom;
+using ControleDeBar.Infra.Modulos.ModuloGarcom;
+using ControleDeBar.Dominio.Modulos.ModuloConta;
+using ControleDeBar.Infra.Modulos.ModuloConta;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -67,6 +71,8 @@ public static class InjecaoDeDependencia
 
         // Repositórios
         services.AddScoped<IRepositorioMesa, RepositorioMesaEmOrm>();
+        services.AddScoped<IRepositorioGarcom, RepositorioGarcomEmOrm>();
+        services.AddScoped<IRepositorioConta, RepositorioContaEmOrm>();
     }
 }
 

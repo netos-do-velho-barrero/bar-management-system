@@ -98,6 +98,6 @@ public class ServicoGarcom(
     {
         return repositorioConta
             .SelecionarTodos()
-            .Any(c => c.Garcom.Id == garcomId);
+            .Any(c => c.GarcomId == garcomId);
     }
 }

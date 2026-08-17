@@ -1,0 +1,33 @@
+@model ControleDeBar.WebApp.Modulos.ModuloGarcom.DetalhesGarcomViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Garçom";
+}
+
+<h1>Detalhes do Garçom</h1>
+
+<div class="card">
+    <div class="card-body">
+
+        <dl class="row">
+
+            <dt class="col-sm-3">
+                Nome
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Nome
+            </dd>
+
+        </dl>
+
+        <a asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">
+            Editar
+        </a>
+
+        <a asp-action="Listar" class="btn btn-secondary">
+            Voltar
+        </a>
+
+    </div>
+</div>

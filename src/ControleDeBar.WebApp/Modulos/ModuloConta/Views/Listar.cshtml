@@ -1,0 +1,90 @@
+@model List<ControleDeBar.WebApp.Modulos.ModuloConta.ListarContaViewModel>
+
+@{
+    ViewData["Title"] = "Contas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Contas</h1>
+
+    <a asp-action="Abrir" class="btn btn-primary">
+        Abrir Conta
+    </a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">
+        Nenhuma conta cadastrada.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+
+        <thead>
+            <tr>
+                <th>Mesa</th>
+                <th>Garçom</th>
+                <th>Cliente</th>
+                <th>Abertura</th>
+                <th>Situação</th>
+                <th>Valor Total</th>
+                <th class="text-end">Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var conta in Model)
+            {
+                <tr>
+                    <td>
+                        @conta.NumeroMesa
+                    </td>
+
+                    <td>
+                        @conta.NomeGarcom
+                    </td>
+
+                    <td>
+                        @conta.NomeCliente
+                    </td>
+
+                    <td>
+                        @conta.DataAbertura.ToString("dd/MM/yyyy HH:mm")
+                    </td>
+
+                    <td>
+                        @conta.Situacao
+                    </td>
+
+                    <td>
+                        @conta.ValorTotal.ToString("C")
+                    </td>
+
+                    <td class="text-end">
+
+                        <a asp-action="Detalhes" asp-route-id="@conta.Id" class="btn btn-sm btn-secondary">
+                            Detalhes
+                        </a>
+
+                        @if (conta.Situacao == "Aberta")
+                        {
+                            <a asp-action="Editar" asp-route-id="@conta.Id" class="btn btn-sm btn-primary">
+                                Editar
+                            </a>
+
+                            <a asp-action="ConfirmarFechamento" asp-route-id="@conta.Id" class="btn btn-sm btn-success">
+                                Fechar
+                            </a>
+                        }
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}

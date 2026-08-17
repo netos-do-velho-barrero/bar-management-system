@@ -1,0 +1,89 @@
+@model ControleDeBar.WebApp.Modulos.ModuloConta.EditarContaViewModel
+
+@{
+    ViewData["Title"] = "Editar Conta";
+
+    var mesas =
+        ViewBag.Mesas as List<ControleDeBar.WebApp.Modulos.ModuloConta.OpcaoMesaContaViewModel>
+        ?? [];
+
+    var garcons =
+        ViewBag.Garcons as List<ControleDeBar.WebApp.Modulos.ModuloConta.OpcaoGarcomContaViewModel>
+        ?? [];
+}
+
+<h1>Editar Conta</h1>
+
+<form asp-action="Editar" method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+
+        <label asp-for="MesaId" class="form-label">
+            Mesa
+        </label>
+
+        <select asp-for="MesaId" class="form-select">
+
+            @foreach (var mesa in mesas)
+            {
+                <option value="@mesa.Id">
+                    Mesa @mesa.Numero
+                </option>
+            }
+
+        </select>
+
+        <span asp-validation-for="MesaId" class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="GarcomId" class="form-label">
+            Garçom
+        </label>
+
+        <select asp-for="GarcomId" class="form-select">
+
+            @foreach (var garcom in garcons)
+            {
+                <option value="@garcom.Id">
+                    @garcom.Nome
+                </option>
+            }
+
+        </select>
+
+        <span asp-validation-for="GarcomId" class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="NomeCliente" class="form-label">
+            Nome do cliente
+        </label>
+
+        <input asp-for="NomeCliente" class="form-control" />
+
+        <span asp-validation-for="NomeCliente" class="text-danger"></span>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar alterações
+    </button>
+
+    <a asp-action="Listar" class="btn btn-secondary">
+        Voltar
+    </a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

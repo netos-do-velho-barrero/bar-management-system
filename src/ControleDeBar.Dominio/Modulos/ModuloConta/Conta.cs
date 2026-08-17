@@ -8,29 +8,47 @@ namespace ControleDeBar.Dominio.Modulos.ModuloConta;
 
 public class Conta : EntidadeBase<Conta>, IEntidadeDoUsuario
 {
+    public Guid MesaId { get; set; }
+
     public Mesa Mesa { get; set; } = null!;
+
+    public Guid GarcomId { get; set; }
+
     public Garcom Garcom { get; set; } = null!;
+
     public string NomeCliente { get; set; } = string.Empty;
+
     public DateTime DataAbertura { get; set; }
+
     public SituacaoConta Situacao { get; set; } = SituacaoConta.Aberta;
 
     public List<PedidoConta> Pedidos { get; set; } = [];
 
     public Guid UserId { get; set; }
 
-    // Calculado automaticamente a partir dos pedidos vinculados — não é persistido.
-    public decimal ValorTotal => Pedidos.Sum(p => p.Subtotal);
+    public decimal ValorTotal =>
+        Pedidos.Sum(p => p.Subtotal);
 
     public Conta()
     {
     }
 
-    public Conta(Mesa mesa, Garcom garcom, string nomeCliente) : this()
+    public Conta(
+        Mesa mesa,
+        Garcom garcom,
+        string nomeCliente
+    ) : this()
     {
         Mesa = mesa;
+        MesaId = mesa.Id;
+
         Garcom = garcom;
+        GarcomId = garcom.Id;
+
         NomeCliente = nomeCliente;
+
         DataAbertura = DateTime.Now;
+
         Situacao = SituacaoConta.Aberta;
     }
 
@@ -38,8 +56,16 @@ public class Conta : EntidadeBase<Conta>, IEntidadeDoUsuario
     {
         List<string> erros = [];
 
-        if (string.IsNullOrWhiteSpace(NomeCliente) || NomeCliente.Length < 2 || NomeCliente.Length > 100)
-            erros.Add("O campo \"Nome do cliente\" deve conter entre 2 e 100 caracteres.");
+        if (
+            string.IsNullOrWhiteSpace(NomeCliente) ||
+            NomeCliente.Length < 2 ||
+            NomeCliente.Length > 100
+        )
+        {
+            erros.Add(
+                "O campo \"Nome do cliente\" deve conter entre 2 e 100 caracteres."
+            );
+        }
 
         if (Mesa is null)
             erros.Add("O campo \"Mesa\" deve ser preenchido.");
@@ -50,11 +76,14 @@ public class Conta : EntidadeBase<Conta>, IEntidadeDoUsuario
         return erros;
     }
 
-    // Edição de conta só é permitida enquanto ela estiver aberta (regra validada no serviço).
     public override void Atualizar(Conta entidadeAtualizada)
     {
         Mesa = entidadeAtualizada.Mesa;
+        MesaId = entidadeAtualizada.MesaId;
+
         Garcom = entidadeAtualizada.Garcom;
+        GarcomId = entidadeAtualizada.GarcomId;
+
         NomeCliente = entidadeAtualizada.NomeCliente;
     }
 

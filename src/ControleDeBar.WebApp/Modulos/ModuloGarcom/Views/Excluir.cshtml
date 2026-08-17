@@ -1,0 +1,43 @@
+@model ControleDeBar.WebApp.Modulos.ModuloGarcom.DetalhesGarcomViewModel
+
+@{
+    ViewData["Title"] = "Excluir Garçom";
+}
+
+<h1>Excluir Garçom</h1>
+
+<div class="alert alert-warning">
+    Tem certeza que deseja excluir este garçom?
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+
+        <dl class="row">
+
+            <dt class="col-sm-3">
+                Nome
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Nome
+            </dd>
+
+        </dl>
+
+    </div>
+</div>
+
+<form asp-action="Excluir" method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <button type="submit" class="btn btn-danger">
+        Confirmar exclusão
+    </button>
+
+    <a asp-action="Listar" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
