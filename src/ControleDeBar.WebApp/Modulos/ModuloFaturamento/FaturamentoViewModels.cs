@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace ControleDeBar.WebApp.Modulos.ModuloFaturamento;
+
 public class FaturamentoDiarioViewModel
 {
     [Display(Name = "Data do Faturamento")]
@@ -23,4 +24,8 @@ public class ItemFaturamentoContaViewModel
     public DateTime DataAbertura { get; set; }
     public DateTime? DataFechamento { get; set; }
     public decimal ValorTotal { get; set; }
+
+
 }
+
+

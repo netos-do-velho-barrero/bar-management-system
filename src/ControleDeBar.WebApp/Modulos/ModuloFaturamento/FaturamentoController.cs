@@ -1,33 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-
-// Namespace da camada de Aplicação (onde estão os DTOs)
 using ControleDeBar.Aplicacao.Modulos.ModuloFaturamento;
 
 namespace ControleDeBar.WebApp.Modulos.ModuloFaturamento;
 
-public class FaturamentoController : Controller
+public class FaturamentoController(ServicoFaturamento servicoFaturamento) : Controller
 {
-    private readonly ServicoFaturamento servicoFaturamento;
-    private readonly IMapper mapper;
-
-    public FaturamentoController(ServicoFaturamento servicoFaturamento, IMapper mapper)
-    {
-        this.servicoFaturamento = servicoFaturamento;
-        this.mapper = mapper;
-    }
-
-    [HttpGet]
     public IActionResult Diario(DateTime? data)
     {
         var dataFiltro = data ?? DateTime.Today;
-
-        // FaturamentoDiarioDto vem do namespace da Aplicação
         var dto = servicoFaturamento.ObterFaturamentoDiario(dataFiltro);
 
-        // Se o FaturamentoDiarioViewModel estiver no mesmo namespace do Controller,
-        // ele é reconhecido automaticamente sem precisar de using extra.
-        var viewModel = mapper.Map<FaturamentoDiarioViewModel>(dto);
+        var viewModel = new FaturamentoDiarioViewModel
+        {
+            Data = dto.Data,
+            TotalFaturado = dto.ValorTotal,
+            QuantidadeContas = dto.QuantidadeContas,
+            ContasFechadas = dto.ContasFechadas.Select(item => new ItemFaturamentoContaViewModel
+            {
+                Id = item.Id,
+                NumeroMesa = item.NumeroMesa,
+                NomeGarcom = item.NomeGarcom,
+                NomeCliente = item.NomeCliente,
+                DataAbertura = item.DataAbertura,
+                DataFechamento = item.DataFechamento,
+                ValorTotal = item.ValorTotal
+            }).ToList()
+        };
 
         return View(viewModel);
     }

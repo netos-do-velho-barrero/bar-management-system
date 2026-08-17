@@ -28,6 +28,8 @@ public sealed class RepositorioContaEmOrm(
         return RegistrosDoUsuario()
             .Include(c => c.Mesa)
             .Include(c => c.Garcom)
+            .Include(c => c.Pedidos)
+            .ThenInclude(p => p.Produto)
             .ToList();
     }
 

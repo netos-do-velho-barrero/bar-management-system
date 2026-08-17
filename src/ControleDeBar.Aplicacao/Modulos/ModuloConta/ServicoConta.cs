@@ -152,13 +152,12 @@ public class ServicoConta(
                 "Esta conta já está fechada."
             );
 
-        repositorioConta.AlterarSituacao(
-            id,
-            SituacaoConta.Fechada
-        );
+        conta.Fechar();
+
+        repositorioConta.Editar(id, conta);
 
         repositorioMesa.AlterarStatus(
-            conta.Mesa.Id,
+            conta.MesaId,
             StatusMesa.Livre
         );
 
@@ -219,8 +218,8 @@ public class ServicoConta(
     }
 
     public List<OpcaoMesaContaDto> SelecionarMesasDisponiveis(
-    Guid? contaId = null
-)
+        Guid? contaId = null
+    )
     {
         Guid? mesaDaContaId = null;
 

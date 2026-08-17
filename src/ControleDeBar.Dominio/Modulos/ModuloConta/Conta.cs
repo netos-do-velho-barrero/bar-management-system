@@ -20,6 +20,8 @@ public class Conta : EntidadeBase<Conta>, IEntidadeDoUsuario
 
     public DateTime DataAbertura { get; set; }
 
+    public DateTime? DataFechamento { get; set; }
+
     public SituacaoConta Situacao { get; set; } = SituacaoConta.Aberta;
 
     public List<PedidoConta> Pedidos { get; set; } = [];
@@ -90,5 +92,6 @@ public class Conta : EntidadeBase<Conta>, IEntidadeDoUsuario
     public void Fechar()
     {
         Situacao = SituacaoConta.Fechada;
+        DataFechamento = DateTime.Now;
     }
 }
