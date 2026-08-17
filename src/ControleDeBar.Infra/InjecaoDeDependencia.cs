@@ -6,6 +6,10 @@ using ControleDeBar.Dominio.Modulos.ModuloGarcom;
 using ControleDeBar.Infra.Modulos.ModuloGarcom;
 using ControleDeBar.Dominio.Modulos.ModuloConta;
 using ControleDeBar.Infra.Modulos.ModuloConta;
+using ControleDeBar.Dominio.Modulos.ModuloProduto;
+using ControleDeBar.Infra.Modulos.ModuloProduto;
+using ControleDeBar.Dominio.Modulos.ModuloPedidoConta;
+using ControleDeBar.Infra.Modulos.ModuloPedidoConta;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -73,6 +77,8 @@ public static class InjecaoDeDependencia
         services.AddScoped<IRepositorioMesa, RepositorioMesaEmOrm>();
         services.AddScoped<IRepositorioGarcom, RepositorioGarcomEmOrm>();
         services.AddScoped<IRepositorioConta, RepositorioContaEmOrm>();
+        services.AddScoped<IRepositorioProduto, RepositorioProdutoEmOrm>();
+        services.AddScoped<IRepositorioPedidoConta, RepositorioPedidoContaEmOrm>();
     }
 }
 
