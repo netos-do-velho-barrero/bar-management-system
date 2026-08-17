@@ -46,6 +46,10 @@ public sealed class ContaConfiguration
             .HasForeignKey(c => c.GarcomId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.HasIndex(c => new { c.UserId, c.MesaId })
+            .IsUnique()
+            .HasDatabaseName("UQ_TBConta_UserId_MesaId");
+
         builder.Ignore(c => c.ValorTotal);
     }
 }

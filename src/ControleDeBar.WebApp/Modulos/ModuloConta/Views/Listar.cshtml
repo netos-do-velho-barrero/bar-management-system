@@ -2,82 +2,66 @@
 
 @{
     ViewData["Title"] = "Contas";
+    ViewBag.Titulo = "Gerenciar Contas";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Contas</h1>
-
-    <a asp-action="Abrir" class="btn btn-primary">
-        Abrir Conta
+    <div>
+        <p class="text-muted mb-0">
+            <i class="bi bi-info-circle me-2"></i>
+            Total de contas abertas: <strong>@Model.Where(c => c.Situacao == "Aberta").Count()</strong>
+        </p>
+    </div>
+    <a asp-action="Abrir" class="btn btn-primary rounded-3 px-4">
+        <i class="bi bi-plus-lg me-2"></i>Abrir Nova Conta
     </a>
 </div>
 
 @if (Model.Count == 0)
 {
-    <div class="alert alert-info">
-        Nenhuma conta cadastrada.
+    <div class="alert alert-primary border-start border-4 rounded-3">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Nenhuma conta cadastrada.</strong> Comece abrindo uma nova conta!
     </div>
 }
 else
 {
-    <table class="table table-striped">
+    <!-- Abas de Filtro -->
+    <div class="nav nav-tabs mb-4" id="filtroContas" role="tablist">
+        <button class="nav-link active" id="todas-tab" data-bs-toggle="tab" data-bs-target="#todas" type="button" role="tab">
+            <i class="bi bi-list me-2"></i>Todas <span class="badge bg-primary ms-2">@Model.Count</span>
+        </button>
+        <button class="nav-link" id="abertas-tab" data-bs-toggle="tab" data-bs-target="#abertas" type="button" role="tab">
+            <i class="bi bi-unlock me-2"></i>Abertas <span class="badge bg-success ms-2">@Model.Where(c => c.Situacao == "Aberta").Count()</span>
+        </button>
+        <button class="nav-link" id="fechadas-tab" data-bs-toggle="tab" data-bs-target="#fechadas" type="button" role="tab">
+            <i class="bi bi-lock me-2"></i>Fechadas <span class="badge bg-danger ms-2">@Model.Where(c => c.Situacao == "Fechada").Count()</span>
+        </button>
+    </div>
 
-        <thead>
-            <tr>
-                <th>Mesa</th>
-                <th>Garçom</th>
-                <th>Cliente</th>
-                <th>Abertura</th>
-                <th>Situação</th>
-                <th>Valor Total</th>
-                <th class="text-end">Ações</th>
-            </tr>
-        </thead>
+    <!-- Conteúdo das Abas -->
+    <div class="tab-content" id="filtroContasContent">
+        <!-- Todas as Contas -->
+        <div class="tab-pane fade show active" id="todas" role="tabpanel">
+            @await Html.PartialAsync("_TabelaContas", Model)
+        </div>
 
-        <tbody>
+        <!-- Contas Abertas -->
+        <div class="tab-pane fade" id="abertas" role="tabpanel">
+            @await Html.PartialAsync("_TabelaContas", Model.Where(c => c.Situacao == "Aberta").ToList())
+        </div>
 
-            @foreach (var conta in Model)
-            {
-                <tr>
-                    <td>
-                        @conta.NumeroMesa
-                    </td>
+        <!-- Contas Fechadas -->
+        <div class="tab-pane fade" id="fechadas" role="tabpanel">
+            @await Html.PartialAsync("_TabelaContas", Model.Where(c => c.Situacao == "Fechada").ToList())
+        </div>
+    </div>
 
-                    <td>
-                        @conta.NomeGarcom
-                    </td>
-
-                    <td>
-                        @conta.NomeCliente
-                    </td>
-
-                    <td>
-                        @conta.DataAbertura.ToString("dd/MM/yyyy HH:mm")
-                    </td>
-
-                    <td>
-                        @conta.Situacao
-                    </td>
-
-                    <td>
-                        @conta.ValorTotal.ToString("C")
-                    </td>
-
-                    <td class="text-end">
-
-                        <a asp-action="Detalhes" asp-route-id="@conta.Id" class="btn btn-sm btn-secondary">
-                            Detalhes
-                        </a>
-
-                        @if (conta.Situacao == "Aberta")
-                        {
-                            <a asp-action="Editar" asp-route-id="@conta.Id" class="btn btn-sm btn-primary">
-                                Editar
-                            </a>
-
-                            <a asp-action="ConfirmarFechamento" asp-route-id="@conta.Id" class="btn btn-sm btn-success">
-                                Fechar
-                            </a>
+    <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
+        <i class="bi bi-shield-check me-2"></i>
+        <strong>Privacidade Garantida:</strong> Você só vê contas do seu bar. Nenhum outro usuário tem acesso a essas informações.
+    </div>
+}
                         }
 
                     </td>

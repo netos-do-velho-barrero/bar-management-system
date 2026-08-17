@@ -1,45 +1,88 @@
 @{
     Layout = "_Layout";
-    ViewBag.Titulo = "Listagem de Produtos";
+    ViewBag.Titulo = "Gerenciar Produtos";
 }
 @model List<ListarProdutoViewModel>;
-<a class="btn btn-outline-primary rounded-pill px-4 mb-3" asp-action="Cadastrar">Cadastrar Novo</a>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <p class="text-muted mb-0">
+            <i class="bi bi-info-circle me-2"></i>
+            Total de produtos: <strong>@Model.Count</strong>
+        </p>
+    </div>
+    <a class="btn btn-primary rounded-3 px-4" asp-action="Cadastrar">
+        <i class="bi bi-plus-lg me-2"></i>Cadastrar Novo Produto
+    </a>
+</div>
+
 @if (TempData["MensagemErro"] is string mensagemErro)
 {
-    <div class="alert alert-danger border-start border-danger border-4 rounded-3" role="alert">
+    <div class="alert alert-danger border-start border-4 rounded-3 alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-circle me-2"></i>
         @mensagemErro
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
 }
+
 @if (Model.Count == 0)
 {
-    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
-        Nenhum produto cadastrado.
+    <div class="alert alert-primary border-start border-4 rounded-3">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Nenhum produto cadastrado.</strong> Comece adicionando produtos ao seu cardápio!
     </div>
 }
 else
 {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
-        @foreach (ListarProdutoViewModel p in Model)
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
+        @foreach (ListarProdutoViewModel p in Model.OrderBy(x => x.Nome))
         {
             <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
-                            <h5 class="card-title mb-0">@p.Nome</h5>
-                            <span class="badge text-bg-primary rounded-pill">@p.PrecoVenda.ToString("C")</span>
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title fw-bold text-dark mb-0">@p.Nome</h5>
                         </div>
-                        <dl class="row g-2 mb-4">
-                            <dt class="col-5 text-secondary fw-semibold">ID</dt>
-                            <dd class="col-7 mb-0 text-break">@p.Id</dd>
-                        </dl>
-                        <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">
-                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Detalhes" asp-route-id="@p.Id">Detalhes</a>
-                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Editar" asp-route-id="@p.Id">Editar</a>
-                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Excluir" asp-route-id="@p.Id">Excluir</a>
+                        
+                        <div class="mb-3 p-3 bg-info-subtle rounded-3 text-center">
+                            <span class="badge bg-info text-dark rounded-2 p-2" style="font-size: 1.2rem;">
+                                @p.PrecoVenda.ToString("C")
+                            </span>
+                        </div>
+
+                        <small class="text-muted mb-3">
+                            <i class="bi bi-key me-1"></i>
+                            <span class="text-break">@p.Id.ToString().Substring(0, 12)}...</span>
+                        </small>
+
+                        <div class="mt-auto d-flex flex-wrap gap-2">
+                            <a class="btn btn-outline-secondary btn-sm rounded-2 flex-grow-1" 
+                               asp-action="Detalhes" 
+                               asp-route-id="@p.Id"
+                               title="Visualizar detalhes">
+                                <i class="bi bi-eye me-1"></i>Ver
+                            </a>
+                            <a class="btn btn-outline-primary btn-sm rounded-2 flex-grow-1" 
+                               asp-action="Editar" 
+                               asp-route-id="@p.Id"
+                               title="Editar produto">
+                                <i class="bi bi-pencil me-1"></i>Editar
+                            </a>
+                            <a class="btn btn-outline-danger btn-sm rounded-2 flex-grow-1" 
+                               asp-action="Excluir" 
+                               asp-route-id="@p.Id"
+                               title="Excluir produto">
+                                <i class="bi bi-trash me-1"></i>Excluir
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         }
+    </div>
+
+    <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
+        <i class="bi bi-shield-check me-2"></i>
+        <strong>Privacidade Garantida:</strong> Você só vê produtos do seu bar. Nenhum outro usuário tem acesso ao seu cardápio.
     </div>
 }

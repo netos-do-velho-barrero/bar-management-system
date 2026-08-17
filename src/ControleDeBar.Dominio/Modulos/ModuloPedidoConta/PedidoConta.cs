@@ -7,13 +7,14 @@ namespace ControleDeBar.Dominio.Modulos.ModuloPedidoConta;
 
 public class PedidoConta : EntidadeBase<PedidoConta>, IEntidadeDoUsuario
 {
+    public Guid ProdutoId { get; set; }
     public Produto Produto { get; set; } = null!;
-    public int Quantidade { get; set; }
 
-
-    public decimal PrecoUnitario { get; set; }
-
+    public Guid ContaId { get; set; }
     public Conta Conta { get; set; } = null!;
+
+    public int Quantidade { get; set; }
+    public decimal PrecoUnitario { get; set; }
 
     public Guid UserId { get; set; }
 

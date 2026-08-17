@@ -3,17 +3,39 @@ using ControleDeBar.Aplicacao.Compartilhado;
 using ControleDeBar.Dominio.Modulos.ModuloConta;
 using ControleDeBar.Dominio.Modulos.ModuloMesa;
 using ControleDeBar.Dominio.Modulos.ModuloGarcom;
+using ControleDeBar.Dominio.Compartilhado.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace ControleDeBar.Aplicacao.Modulos.ModuloConta;
 
 public class ServicoConta(
     IRepositorioConta repositorioConta,
     IRepositorioMesa repositorioMesa,
-    IRepositorioGarcom repositorioGarcom
+    IRepositorioGarcom repositorioGarcom,
+    IProvedorDeUsuario provedorDeUsuario,
+    ILogger<ServicoConta>? logger = null
 ) : ServicoBase<Conta>
 {
     public Result Abrir(AbrirContaDto dto)
     {
+        Mesa? mesaSemFiltro = repositorioMesa.SelecionarPorIdSemFiltro(dto.MesaId);
+
+        if (mesaSemFiltro is not null && mesaSemFiltro.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Mesa),
+                provedorDeUsuario.Id,
+                mesaSemFiltro.UserId,
+                nameof(dto.MesaId)
+            );
+
+            return Falha(
+                nameof(dto.MesaId),
+                "Esta mesa não pertence ao seu bar."
+            );
+        }
+
         Result<Mesa> resultadoMesa = SelecionarMesa(dto.MesaId);
 
         if (resultadoMesa.IsFailed)
@@ -25,6 +47,41 @@ public class ServicoConta(
             return resultadoGarcom.ToResult();
 
         Mesa mesa = resultadoMesa.Value;
+        Garcom garcom = resultadoGarcom.Value;
+
+        // Validação Multi-Tenancy: Mesa pertence ao mesmo bar?
+        if (mesa.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Mesa),
+                provedorDeUsuario.Id,
+                mesa.UserId,
+                nameof(dto.MesaId)
+            );
+
+            return Falha(
+                nameof(dto.MesaId),
+                "Esta mesa não pertence ao seu bar."
+            );
+        }
+
+        // Validação Multi-Tenancy: Garçom pertence ao mesmo bar?
+        if (garcom.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Garcom),
+                provedorDeUsuario.Id,
+                garcom.UserId,
+                nameof(dto.GarcomId)
+            );
+
+            return Falha(
+                nameof(dto.GarcomId),
+                "Este garçom não pertence ao seu bar."
+            );
+        }
 
         if (mesa.Status == StatusMesa.Ocupada)
             return Falha(
@@ -34,7 +91,7 @@ public class ServicoConta(
 
         Conta novaConta = new(
             mesa,
-            resultadoGarcom.Value,
+            garcom,
             dto.NomeCliente
         );
 
@@ -55,6 +112,25 @@ public class ServicoConta(
 
     public Result Editar(EditarContaDto dto)
     {
+        Conta? contaExistenteSemFiltro =
+            repositorioConta.SelecionarPorIdSemFiltro(dto.Id);
+
+        if (contaExistenteSemFiltro is not null && contaExistenteSemFiltro.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Conta),
+                provedorDeUsuario.Id,
+                contaExistenteSemFiltro.UserId,
+                nameof(dto.Id)
+            );
+
+            return Falha(
+                string.Empty,
+                "Esta conta não pertence ao seu bar."
+            );
+        }
+
         Conta? contaExistente =
             repositorioConta.SelecionarPorId(dto.Id);
 
@@ -83,6 +159,41 @@ public class ServicoConta(
             return resultadoGarcom.ToResult();
 
         Mesa novaMesa = resultadoMesa.Value;
+        Garcom novoGarcom = resultadoGarcom.Value;
+
+        // Validação Multi-Tenancy: Mesa pertence ao mesmo bar?
+        if (novaMesa.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Mesa),
+                provedorDeUsuario.Id,
+                novaMesa.UserId,
+                nameof(dto.MesaId)
+            );
+
+            return Falha(
+                nameof(dto.MesaId),
+                "Esta mesa não pertence ao seu bar."
+            );
+        }
+
+        // Validação Multi-Tenancy: Garçom pertence ao mesmo bar?
+        if (novoGarcom.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Garcom),
+                provedorDeUsuario.Id,
+                novoGarcom.UserId,
+                nameof(dto.GarcomId)
+            );
+
+            return Falha(
+                nameof(dto.GarcomId),
+                "Este garçom não pertence ao seu bar."
+            );
+        }
 
         if (
             novaMesa.Status == StatusMesa.Ocupada &&
@@ -97,7 +208,7 @@ public class ServicoConta(
 
         Conta contaAtualizada = new(
             novaMesa,
-            resultadoGarcom.Value,
+            novoGarcom,
             dto.NomeCliente
         );
 
@@ -137,6 +248,25 @@ public class ServicoConta(
 
     public Result Fechar(Guid id)
     {
+        Conta? contaSemFiltro =
+            repositorioConta.SelecionarPorIdSemFiltro(id);
+
+        if (contaSemFiltro is not null && contaSemFiltro.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Conta),
+                provedorDeUsuario.Id,
+                contaSemFiltro.UserId,
+                nameof(id)
+            );
+
+            return Falha(
+                string.Empty,
+                "Esta conta não pertence ao seu bar."
+            );
+        }
+
         Conta? conta =
             repositorioConta.SelecionarPorId(id);
 
@@ -182,6 +312,24 @@ public class ServicoConta(
 
     public Result<DetalhesContaDto> SelecionarPorId(Guid id)
     {
+        Conta? contaSemFiltro =
+            repositorioConta.SelecionarPorIdSemFiltro(id);
+
+        if (contaSemFiltro is not null && contaSemFiltro.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Conta),
+                provedorDeUsuario.Id,
+                contaSemFiltro.UserId,
+                nameof(id)
+            );
+
+            return Result.Fail(
+                "Esta conta não pertence ao seu bar."
+            );
+        }
+
         Conta? conta =
             repositorioConta.SelecionarPorId(id);
 

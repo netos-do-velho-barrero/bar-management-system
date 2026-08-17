@@ -116,6 +116,12 @@ public abstract class RepositorioBaseEmOrm<T>(
             .SingleOrDefault(e => e.Id == idSelecionado);
     }
 
+    public virtual T? SelecionarPorIdSemFiltro(Guid idSelecionado)
+    {
+        return registros
+            .SingleOrDefault(e => e.Id == idSelecionado);
+    }
+
     public virtual List<T> SelecionarTodos()
     {
         return RegistrosDoUsuario()

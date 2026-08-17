@@ -4,96 +4,172 @@
     ViewBag.Titulo = "Faturamento Diário";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    
-
-    <form method="get" asp-controller="Faturamento" asp-action="Diario" class="d-flex align-items-center gap-2">
-        <label for="data" class="form-label mb-0 fw-semibold">Data:</label>
-        <input type="date" id="data" name="data" value="@Model.Data.ToString("yyyy-MM-dd")" class="form-control form-control-sm" style="width: 170px;" />
-        <button type="submit" class="btn btn-primary btn-sm px-3 rounded-pill">Filtrar</button>
+<!-- Filtro de Data -->
+<div class="mb-4">
+    <form method="get" asp-controller="Faturamento" asp-action="Diario" class="d-flex align-items-end gap-3 flex-wrap">
+        <div>
+            <label for="data" class="form-label fw-semibold mb-2">
+                <i class="bi bi-calendar3 me-2 text-primary"></i>Selecione a Data
+            </label>
+            <input type="date" 
+                   id="data" 
+                   name="data" 
+                   value="@Model.Data.ToString("yyyy-MM-dd")" 
+                   class="form-control rounded-3" 
+                   style="width: 220px;" />
+        </div>
+        <button type="submit" class="btn btn-primary rounded-3 px-4">
+            <i class="bi bi-search me-2"></i>Filtrar
+        </button>
     </form>
 </div>
 
-<!-- Cards Resumo -->
+<!-- Cards Resumo Principais -->
 <div class="row g-3 mb-4">
-    <div class="col-md-4">
-        <div class="card border-success shadow-sm">
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
             <div class="card-body">
-                <h6 class="card-subtitle text-muted mb-1">Total Faturado</h6>
-                <h3 class="card-title text-success fw-bold mb-0">@Model.TotalFaturado.ToString("C")</h3>
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="text-muted small fw-semibold">
+                        <i class="bi bi-currency-dollar me-1"></i>Total Faturado
+                    </span>
+                    <i class="bi bi-cash-coin text-success fs-5"></i>
+                </div>
+                <h2 class="text-success fw-bold mb-0">@Model.TotalFaturado.ToString("C")</h2>
+                <small class="text-muted">em @Model.Data.ToString("dd/MM/yyyy")</small>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card border-primary shadow-sm">
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
             <div class="card-body">
-                <h6 class="card-subtitle text-muted mb-1">Contas Fechadas</h6>
-                <h3 class="card-title text-primary fw-bold mb-0">@Model.QuantidadeContas</h3>
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="text-muted small fw-semibold">
+                        <i class="bi bi-receipt me-1"></i>Contas Fechadas
+                    </span>
+                    <i class="bi bi-receipt text-primary fs-5"></i>
+                </div>
+                <h2 class="text-primary fw-bold mb-0">@Model.QuantidadeContas</h2>
+                <small class="text-muted">contas encerradas</small>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card border-info shadow-sm">
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
             <div class="card-body">
-                <h6 class="card-subtitle text-muted mb-1">Ticket Médio</h6>
-                <h3 class="card-title text-info fw-bold mb-0">@Model.TicketMedio.ToString("C")</h3>
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="text-muted small fw-semibold">
+                        <i class="bi bi-graph-up me-1"></i>Ticket Médio
+                    </span>
+                    <i class="bi bi-graph-up text-info fs-5"></i>
+                </div>
+                <h2 class="text-info fw-bold mb-0">@Model.TicketMedio.ToString("C")</h2>
+                <small class="text-muted">por conta</small>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Tabela de Contas Fechadas no Dia -->
-<div class="card border-primary-subtle shadow-sm">
+<!-- Contas Fechadas Detalhadas -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom py-3">
+        <h5 class="mb-0">
+            <i class="bi bi-list-check me-2 text-primary"></i>
+            Contas Encerradas em <strong>@Model.Data.ToString("dd/MM/yyyy")</strong>
+        </h5>
+    </div>
     <div class="card-body">
-        <h5 class="card-title mb-3">Contas encerradas em @Model.Data.ToString("dd/MM/yyyy")</h5>
-
         @if (Model.ContasFechadas.Count == 0)
         {
-            <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+            <div class="alert alert-primary border-start border-4 rounded-3" role="alert">
+                <i class="bi bi-info-circle me-2"></i>
                 Nenhuma conta encerrada nesta data.
             </div>
         }
         else
         {
             <div class="table-responsive">
-                <table class="table align-middle">
+                <table class="table table-hover mb-0">
                     <thead>
-                        <tr class="text-secondary text-uppercase small">
-                            <th>Mesa</th>
-                            <th>Garçom</th>
-                            <th>Cliente</th>
-                            <th>Abertura</th>
-                            <th>Fechamento</th>
-                            <th class="text-end">Valor Total</th>
-                            <th class="text-end" style="width: 100px;">Ações</th>
+                        <tr>
+                            <th>
+                                <i class="bi bi-grid-3x3-gap me-2"></i>Mesa
+                            </th>
+                            <th>
+                                <i class="bi bi-person-badge me-2"></i>Garçom
+                            </th>
+                            <th>
+                                <i class="bi bi-person me-2"></i>Cliente
+                            </th>
+                            <th>
+                                <i class="bi bi-clock me-2"></i>Abertura
+                            </th>
+                            <th>
+                                <i class="bi bi-clock-check me-2"></i>Fechamento
+                            </th>
+                            <th class="text-end">
+                                <i class="bi bi-currency-dollar me-2"></i>Total
+                            </th>
+                            <th class="text-end">
+                                <i class="bi bi-eye me-2"></i>Ação
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.ContasFechadas)
                         {
                             <tr>
-                                <td>Mesa @item.NumeroMesa</td>
-                                <td>@item.NomeGarcom</td>
-                                <td>@(string.IsNullOrWhiteSpace(item.NomeCliente) ? "-" : item.NomeCliente)</td>
-                                <td>@item.DataAbertura.ToString("HH:mm")</td>
-                                <td>@(item.DataFechamento?.ToString("HH:mm") ?? "-")</td>
-                                <td class="text-end fw-bold text-success">@item.ValorTotal.ToString("C")</td>
+                                <td>
+                                    <span class="badge bg-info-subtle text-info rounded-2 p-2">
+                                        <i class="bi bi-grid-3x3-gap me-1"></i>Mesa @item.NumeroMesa
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="fw-semibold text-dark">@item.NomeGarcom</span>
+                                </td>
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(item.NomeCliente) ? "-" : item.NomeCliente)
+                                </td>
+                                <td>
+                                    <small class="text-muted">@item.DataAbertura.ToString("HH:mm")</small>
+                                </td>
+                                <td>
+                                    <small class="text-muted">@(item.DataFechamento?.ToString("HH:mm") ?? "-")</small>
+                                </td>
                                 <td class="text-end">
-                                    <a asp-controller="Conta" asp-action="Detalhes" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm rounded-pill px-3">
-                                        Detalhes
+                                    <strong class="text-success">@item.ValorTotal.ToString("C")</strong>
+                                </td>
+                                <td class="text-end">
+                                    <a asp-controller="Conta" 
+                                       asp-action="Detalhes" 
+                                       asp-route-id="@item.Id" 
+                                       class="btn btn-sm btn-outline-primary rounded-2"
+                                       title="Ver detalhes da conta">
+                                        <i class="bi bi-eye me-1"></i>Ver
                                     </a>
                                 </td>
                             </tr>
                         }
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td colspan="5" class="text-end fw-bold text-uppercase small text-primary">Total do Dia</td>
-                            <td class="text-end fw-bold text-success">@Model.TotalFaturado.ToString("C")</td>
+                        <tr class="table-light fw-bold">
+                            <td colspan="5" class="text-end text-primary">
+                                <i class="bi bi-calculator me-2"></i>Total do Dia
+                            </td>
+                            <td class="text-end text-success">
+                                @Model.TotalFaturado.ToString("C")
+                            </td>
                             <td></td>
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+
+            <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
+                <i class="bi bi-shield-check me-2"></i>
+                <strong>Privacidade Garantida:</strong> Você só vê faturamento do seu bar. Nenhum outro usuário tem acesso a essas informações financeiras.
             </div>
         }
     </div>

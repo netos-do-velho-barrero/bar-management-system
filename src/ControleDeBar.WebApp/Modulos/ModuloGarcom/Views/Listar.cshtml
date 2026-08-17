@@ -2,53 +2,74 @@
 
 @{
     ViewData["Title"] = "Garçons";
+    ViewBag.Titulo = "Gerenciar Garçons";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Garçons</h1>
-
-    <a asp-action="Cadastrar" class="btn btn-primary">
-        Cadastrar Garçom
+    <div>
+        <p class="text-muted mb-0">
+            <i class="bi bi-info-circle me-2"></i>
+            Total de garçons: <strong>@Model.Count</strong>
+        </p>
+    </div>
+    <a asp-action="Cadastrar" class="btn btn-primary rounded-3 px-4">
+        <i class="bi bi-plus-lg me-2"></i>Cadastrar Novo Garçom
     </a>
 </div>
 
 @if (Model.Count == 0)
 {
-    <div class="alert alert-info">
-        Nenhum garçom cadastrado.
+    <div class="alert alert-primary border-start border-4 rounded-3">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Nenhum garçom cadastrado.</strong> Comece adicionando sua equipe!
     </div>
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th class="text-end">Ações</th>
-            </tr>
-        </thead>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        @foreach (var garcom in Model.OrderBy(g => g.Nome))
+        {
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="p-3 bg-info-subtle text-info rounded-3 me-3">
+                                <i class="bi bi-person-badge fs-5"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title fw-bold mb-0">@garcom.Nome</h5>
+                                <small class="text-muted">ID: @garcom.Id.ToString().Substring(0, 8)...</small>
+                            </div>
+                        </div>
 
-        <tbody>
-            @foreach (var garcom in Model)
-            {
-                <tr>
-                    <td>@garcom.Nome</td>
+                        <div class="mt-auto d-flex flex-wrap gap-2">
+                            <a asp-action="Detalhes" 
+                               asp-route-id="@garcom.Id" 
+                               class="btn btn-sm btn-outline-secondary rounded-2 flex-grow-1"
+                               title="Visualizar detalhes">
+                                <i class="bi bi-eye me-1"></i>Ver
+                            </a>
+                            <a asp-action="Editar" 
+                               asp-route-id="@garcom.Id" 
+                               class="btn btn-sm btn-outline-primary rounded-2 flex-grow-1"
+                               title="Editar garçom">
+                                <i class="bi bi-pencil me-1"></i>Editar
+                            </a>
+                            <a asp-action="Excluir" 
+                               asp-route-id="@garcom.Id" 
+                               class="btn btn-sm btn-outline-danger rounded-2 flex-grow-1"
+                               title="Excluir garçom">
+                                <i class="bi bi-trash me-1"></i>Excluir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 
-                    <td class="text-end">
-                        <a asp-action="Detalhes" asp-route-id="@garcom.Id" class="btn btn-sm btn-secondary">
-                            Detalhes
-                        </a>
-
-                        <a asp-action="Editar" asp-route-id="@garcom.Id" class="btn btn-sm btn-primary">
-                            Editar
-                        </a>
-
-                        <a asp-action="Excluir" asp-route-id="@garcom.Id" class="btn btn-sm btn-danger">
-                            Excluir
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
+        <i class="bi bi-shield-check me-2"></i>
+        <strong>Privacidade Garantida:</strong> Você só vê garçons do seu bar. Nenhum outro usuário tem acesso a essas informações.
+    </div>
 }

@@ -3,44 +3,98 @@
 
 @{
     ViewData["Title"] = "Mesas";
+    ViewBag.Titulo = "Gerenciar Mesas";
 }
 
-<h1>Mesas</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <p class="text-muted mb-0">
+            <i class="bi bi-info-circle me-2"></i>
+            Total de mesas: <strong>@Model.Count</strong> | 
+            Livres: <strong class="text-success">@Model.Where(m => m.Status == "Livre").Count()</strong> | 
+            Ocupadas: <strong class="text-warning">@Model.Where(m => m.Status == "Ocupada").Count()</strong>
+        </p>
+    </div>
+    <a asp-action="Cadastrar" class="btn btn-primary rounded-3 px-4">
+        <i class="bi bi-plus-lg me-2"></i>Cadastrar Nova Mesa
+    </a>
+</div>
 
-<p>
-    <a asp-action="Cadastrar" class="btn btn-primary">Cadastrar mesa</a>
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Número</th>
-            <th>Quantidade de lugares</th>
-            <th>Status</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (ListarMesaViewModel mesa in Model)
+@if (Model.Count == 0)
+{
+    <div class="alert alert-primary border-start border-4 rounded-3">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Nenhuma mesa cadastrada.</strong> Comece cadastrando suas mesas!
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+        @foreach (var mesa in Model.OrderBy(m => m.Numero))
         {
-            <tr>
-                <td>@mesa.Numero</td>
-                <td>@mesa.QuantidadeLugares</td>
-                <td>@mesa.Status</td>
-                <td>
-                    <a asp-action="Detalhes" asp-route-id="@mesa.Id" class="btn btn-info">
-                        Detalhes
-                    </a>
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="card-title fw-bold mb-1">
+                                    <i class="bi bi-grid-3x3-gap me-2 text-primary"></i>Mesa @mesa.Numero
+                                </h5>
+                                <p class="text-muted small mb-0">@mesa.QuantidadeLugares lugares</p>
+                            </div>
+                            @if (mesa.Status == "Livre")
+                            {
+                                <span class="badge bg-success rounded-2 px-2 py-1">
+                                    <i class="bi bi-check-circle me-1"></i>Livre
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning rounded-2 px-2 py-1 text-dark">
+                                    <i class="bi bi-exclamation-circle me-1"></i>Ocupada
+                                </span>
+                            }
+                        </div>
 
-                    <a asp-action="Editar" asp-route-id="@mesa.Id" class="btn btn-warning">
-                        Editar
-                    </a>
+                        <div class="progress mb-3" style="height: 4px;">
+                            @if (mesa.Status == "Livre")
+                            {
+                                <div class="progress-bar bg-success" style="width: 100%"></div>
+                            }
+                            else
+                            {
+                                <div class="progress-bar bg-warning" style="width: 100%"></div>
+                            }
+                        </div>
 
-                    <a asp-action="Excluir" asp-route-id="@mesa.Id" class="btn btn-danger">
-                        Excluir
-                    </a>
-                </td>
-            </tr>
+                        <div class="mt-auto d-flex flex-wrap gap-2">
+                            <a asp-action="Detalhes" 
+                               asp-route-id="@mesa.Id" 
+                               class="btn btn-sm btn-outline-secondary rounded-2 flex-grow-1"
+                               title="Visualizar detalhes">
+                                <i class="bi bi-eye me-1"></i>Ver
+                            </a>
+                            <a asp-action="Editar" 
+                               asp-route-id="@mesa.Id" 
+                               class="btn btn-sm btn-outline-primary rounded-2 flex-grow-1"
+                               title="Editar mesa">
+                                <i class="bi bi-pencil me-1"></i>Editar
+                            </a>
+                            <a asp-action="Excluir" 
+                               asp-route-id="@mesa.Id" 
+                               class="btn btn-sm btn-outline-danger rounded-2 flex-grow-1"
+                               title="Excluir mesa">
+                                <i class="bi bi-trash me-1"></i>Excluir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+
+    <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
+        <i class="bi bi-shield-check me-2"></i>
+        <strong>Privacidade Garantida:</strong> Você só vê mesas do seu bar. Nenhum outro usuário tem acesso a essas informações.
+    </div>
+}

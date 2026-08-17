@@ -3,17 +3,39 @@ using ControleDeBar.Aplicacao.Compartilhado;
 using ControleDeBar.Dominio.Modulos.ModuloPedidoConta;
 using ControleDeBar.Dominio.Modulos.ModuloConta;
 using ControleDeBar.Dominio.Modulos.ModuloProduto;
+using ControleDeBar.Dominio.Compartilhado.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace ControleDeBar.Aplicacao.Modulos.ModuloPedidoConta;
 
 public class ServicoPedidoConta(
     IRepositorioPedidoConta repositorioPedidoConta,
     IRepositorioConta repositorioConta,
-    IRepositorioProduto repositorioProduto
+    IRepositorioProduto repositorioProduto,
+    IProvedorDeUsuario provedorDeUsuario,
+    ILogger<ServicoPedidoConta>? logger = null
 ) : ServicoBase<PedidoConta>
 {
     public Result Adicionar(AdicionarPedidoContaDto dto)
     {
+        Conta? contaSemFiltro = repositorioConta.SelecionarPorIdSemFiltro(dto.ContaId);
+
+        if (contaSemFiltro is not null && contaSemFiltro.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Conta),
+                provedorDeUsuario.Id,
+                contaSemFiltro.UserId,
+                nameof(dto.ContaId)
+            );
+
+            return Falha(
+                nameof(dto.ContaId),
+                "Esta conta não pertence ao seu bar."
+            );
+        }
+
         Conta? conta = repositorioConta.SelecionarPorId(dto.ContaId);
 
         if (conta == null)
@@ -22,11 +44,63 @@ public class ServicoPedidoConta(
         if (conta.Situacao == SituacaoConta.Fechada)
             return Falha(string.Empty, "Não é possível adicionar pedidos a uma conta fechada.");
 
+        Produto? produtoSemFiltro = repositorioProduto.SelecionarPorIdSemFiltro(dto.ProdutoId);
+
+        if (produtoSemFiltro is not null && produtoSemFiltro.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Produto),
+                provedorDeUsuario.Id,
+                produtoSemFiltro.UserId,
+                nameof(dto.ProdutoId)
+            );
+
+            return Falha(
+                nameof(dto.ProdutoId),
+                "Este produto não pertence ao seu bar."
+            );
+        }
+
         Produto? produto = repositorioProduto.SelecionarPorId(dto.ProdutoId);
 
         if (produto == null)
         {
             return Falha(nameof(dto.ProdutoId), "Selecione um produto válido.");
+        }
+
+        // Validação Multi-Tenancy: Produto pertence ao mesmo bar?
+        if (produto.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Produto),
+                provedorDeUsuario.Id,
+                produto.UserId,
+                nameof(dto.ProdutoId)
+            );
+
+            return Falha(
+                nameof(dto.ProdutoId),
+                "Este produto não pertence ao seu bar."
+            );
+        }
+
+        // Validação Multi-Tenancy: Conta pertence ao mesmo bar?
+        if (conta.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(Conta),
+                provedorDeUsuario.Id,
+                conta.UserId,
+                nameof(dto.ContaId)
+            );
+
+            return Falha(
+                nameof(dto.ContaId),
+                "Esta conta não pertence ao seu bar."
+            );
         }
 
         PedidoConta novoPedido = new(produto, dto.Quantidade)
@@ -46,6 +120,21 @@ public class ServicoPedidoConta(
 
     public Result EditarQuantidade(EditarQuantidadePedidoContaDto dto)
     {
+        PedidoConta? pedidoSemFiltro = repositorioPedidoConta.SelecionarPorIdSemFiltro(dto.Id);
+
+        if (pedidoSemFiltro is not null && pedidoSemFiltro.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(PedidoConta),
+                provedorDeUsuario.Id,
+                pedidoSemFiltro.UserId,
+                nameof(dto.Id)
+            );
+
+            return Falha(string.Empty, "Este pedido não pertence ao seu bar.");
+        }
+
         PedidoConta? pedido = repositorioPedidoConta.SelecionarPorId(dto.Id);
 
         if (pedido == null)
@@ -69,6 +158,21 @@ public class ServicoPedidoConta(
 
     public Result Remover(Guid id)
     {
+        PedidoConta? pedidoSemFiltro = repositorioPedidoConta.SelecionarPorIdSemFiltro(id);
+
+        if (pedidoSemFiltro is not null && pedidoSemFiltro.UserId != provedorDeUsuario.Id)
+        {
+            logger?.LogWarning(
+                "Tentativa de acesso a dados de outro bar. Entidade: {Entidade} | Usuario: {UsuarioAtual} | UserIdEntidade: {UserIdEntidade} | Campo: {Campo}",
+                nameof(PedidoConta),
+                provedorDeUsuario.Id,
+                pedidoSemFiltro.UserId,
+                nameof(id)
+            );
+
+            return Falha(string.Empty, "Este pedido não pertence ao seu bar.");
+        }
+
         PedidoConta? pedido = repositorioPedidoConta.SelecionarPorId(id);
 
         if (pedido == null)
