@@ -25,10 +25,10 @@ public class Mesa : EntidadeBase<Mesa>, IEntidadeDoUsuario
         List<string> erros = [];
 
         if (Numero <= 0)
-            erros.Add("O campo \"Número da mesa\" deve ser preenchido com um valor positivo.");
+            erros.Add("O campo \"Número\" deve ser maior que zero.");
 
         if (QuantidadeLugares <= 0)
-            erros.Add("O campo \"Quantidade de lugares\" deve ser um número positivo.");
+            erros.Add("O campo \"Quantidade de Lugares\" deve ser maior que zero.");
 
         return erros;
     }

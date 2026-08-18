@@ -103,7 +103,7 @@ public class ServicoConta(
         repositorioConta.Cadastrar(novaConta);
 
         repositorioMesa.AlterarStatus(
-            mesa.Id,
+            dto.MesaId,
             StatusMesa.Ocupada
         );
 

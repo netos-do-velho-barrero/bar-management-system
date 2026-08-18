@@ -41,11 +41,17 @@ public class Conta : EntidadeBase<Conta>, IEntidadeDoUsuario
         string nomeCliente
     ) : this()
     {
-        Mesa = mesa;
-        MesaId = mesa.Id;
+        if (mesa is not null)
+        {
+            Mesa = mesa;
+            MesaId = mesa.Id;
+        }
 
-        Garcom = garcom;
-        GarcomId = garcom.Id;
+        if (garcom is not null)
+        {
+            Garcom = garcom;
+            GarcomId = garcom.Id;
+        }
 
         NomeCliente = nomeCliente;
 
@@ -65,15 +71,15 @@ public class Conta : EntidadeBase<Conta>, IEntidadeDoUsuario
         )
         {
             erros.Add(
-                "O campo \"Nome do cliente\" deve conter entre 2 e 100 caracteres."
+                "O campo \"Cliente\" deve conter entre 2 e 100 caracteres."
             );
         }
 
         if (Mesa is null)
-            erros.Add("O campo \"Mesa\" deve ser preenchido.");
+            erros.Add("A mesa deve ser informada.");
 
         if (Garcom is null)
-            erros.Add("O campo \"Garçom\" deve ser preenchido.");
+            erros.Add("O garçom deve ser informado.");
 
         return erros;
     }

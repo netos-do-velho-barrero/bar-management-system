@@ -7,14 +7,14 @@ using ControleDeBar.Testes.Integracao.Compartilhado.Identity;
 using ControleDeBar.Infra.Modulos.ModuloProduto;
 using ControleDeBar.Dominio.Modulos.ModuloProduto;
 
-// using ControleDeBar.Infra.Modulos.ModuloMesa;
-// using ControleDeBar.Dominio.Modulos.ModuloMesa;
-// using ControleDeBar.Infra.Modulos.ModuloGarcom;
-// using ControleDeBar.Dominio.Modulos.ModuloGarcom;
-// using ControleDeBar.Infra.Modulos.ModuloConta;
-// using ControleDeBar.Dominio.Modulos.ModuloConta;
- using ControleDeBar.Infra.Modulos.ModuloPedidoConta;
- using ControleDeBar.Dominio.Modulos.ModuloPedidoConta;
+using ControleDeBar.Infra.Modulos.ModuloMesa;
+using ControleDeBar.Dominio.Modulos.ModuloMesa;
+using ControleDeBar.Infra.Modulos.ModuloGarcom;
+using ControleDeBar.Dominio.Modulos.ModuloGarcom;
+using ControleDeBar.Infra.Modulos.ModuloConta;
+using ControleDeBar.Dominio.Modulos.ModuloConta;
+using ControleDeBar.Infra.Modulos.ModuloPedidoConta;
+using ControleDeBar.Dominio.Modulos.ModuloPedidoConta;
 
 namespace ControleDeBar.Testes.Integracao.Compartilhado.Orm;
 
@@ -28,10 +28,10 @@ public abstract class RepositorioBaseEmOrmTests
 
     protected RepositorioProdutoEmOrm repositorioProduto = null!;
 
-    // protected RepositorioMesaEmOrm repositorioMesa = null!;
-    // protected RepositorioGarcomEmOrm repositorioGarcom = null!;
-    // protected RepositorioContaEmOrm repositorioConta = null!;
-     protected RepositorioPedidoContaEmOrm repositorioPedidoConta = null!;
+    protected RepositorioMesaEmOrm repositorioMesa = null!;
+    protected RepositorioGarcomEmOrm repositorioGarcom = null!;
+    protected RepositorioContaEmOrm repositorioConta = null!;
+    protected RepositorioPedidoContaEmOrm repositorioPedidoConta = null!;
 
     // Hooks / Ganchos
     [TestInitialize]
@@ -56,40 +56,40 @@ public abstract class RepositorioBaseEmOrmTests
         });
 
         // Mesa (descomentar quando o RepositorioMesaEmOrm do Pedro for mesclado)
-        // repositorioMesa = new RepositorioMesaEmOrm(dbContext, new ProvedorDeUsuarioFake(userId));
-        // BuilderSetup.SetCreatePersistenceMethod<Mesa>(repositorioMesa.Cadastrar);
-        // BuilderSetup.SetCreatePersistenceMethod<IList<Mesa>>((mesas) =>
-        // {
-        //     foreach (Mesa mesa in mesas)
-        //         repositorioMesa.Cadastrar(mesa);
-        // });
+        repositorioMesa = new RepositorioMesaEmOrm(dbContext, new ProvedorDeUsuarioFake(userId));
+        BuilderSetup.SetCreatePersistenceMethod<Mesa>(repositorioMesa.Cadastrar);
+        BuilderSetup.SetCreatePersistenceMethod<IList<Mesa>>((mesas) =>
+        {
+            foreach (Mesa mesa in mesas)
+                repositorioMesa.Cadastrar(mesa);
+        });
 
         // Garcom (descomentar quando o RepositorioGarcomEmOrm do Pedro for mesclado)
-        // repositorioGarcom = new RepositorioGarcomEmOrm(dbContext, new ProvedorDeUsuarioFake(userId));
-        // BuilderSetup.SetCreatePersistenceMethod<Garcom>(repositorioGarcom.Cadastrar);
-        // BuilderSetup.SetCreatePersistenceMethod<IList<Garcom>>((garcons) =>
-        // {
-        //     foreach (Garcom garcom in garcons)
-        //         repositorioGarcom.Cadastrar(garcom);
-        // });
+        repositorioGarcom = new RepositorioGarcomEmOrm(dbContext, new ProvedorDeUsuarioFake(userId));
+        BuilderSetup.SetCreatePersistenceMethod<Garcom>(repositorioGarcom.Cadastrar);
+        BuilderSetup.SetCreatePersistenceMethod<IList<Garcom>>((garcons) =>
+        {
+            foreach (Garcom garcom in garcons)
+                repositorioGarcom.Cadastrar(garcom);
+        });
 
         // Conta (descomentar quando o RepositorioContaEmOrm do Pedro for mesclado)
-        // repositorioConta = new RepositorioContaEmOrm(dbContext, new ProvedorDeUsuarioFake(userId));
-        // BuilderSetup.SetCreatePersistenceMethod<Conta>(repositorioConta.Cadastrar);
-        // BuilderSetup.SetCreatePersistenceMethod<IList<Conta>>((contas) =>
-        // {
-        //     foreach (Conta conta in contas)
-        //         repositorioConta.Cadastrar(conta);
-        // });
+        repositorioConta = new RepositorioContaEmOrm(dbContext, new ProvedorDeUsuarioFake(userId));
+        BuilderSetup.SetCreatePersistenceMethod<Conta>(repositorioConta.Cadastrar);
+        BuilderSetup.SetCreatePersistenceMethod<IList<Conta>>((contas) =>
+        {
+            foreach (Conta conta in contas)
+                repositorioConta.Cadastrar(conta);
+        });
 
-         // PedidoConta (descomentar quando disponível)
-         repositorioPedidoConta = new RepositorioPedidoContaEmOrm(dbContext, new ProvedorDeUsuarioFake(userId));
-         BuilderSetup.SetCreatePersistenceMethod<PedidoConta>(repositorioPedidoConta.Cadastrar);
-         BuilderSetup.SetCreatePersistenceMethod<IList<PedidoConta>>((pedidos) =>
-         {
-             foreach (PedidoConta pedido in pedidos)
+        // PedidoConta (descomentar quando disponível)
+        repositorioPedidoConta = new RepositorioPedidoContaEmOrm(dbContext, new ProvedorDeUsuarioFake(userId));
+        BuilderSetup.SetCreatePersistenceMethod<PedidoConta>(repositorioPedidoConta.Cadastrar);
+        BuilderSetup.SetCreatePersistenceMethod<IList<PedidoConta>>((pedidos) =>
+        {
+            foreach (PedidoConta pedido in pedidos)
                 repositorioPedidoConta.Cadastrar(pedido);
-         });
+        });
     }
 
     [TestCleanup]

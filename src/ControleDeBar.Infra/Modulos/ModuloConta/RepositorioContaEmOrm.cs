@@ -47,4 +47,22 @@ public sealed class RepositorioContaEmOrm(
 
         dbContext.SaveChanges();
     }
+
+    public List<Conta> SelecionarAbertas()
+    {
+        return RegistrosDoUsuario()
+            .Include(c => c.Mesa)
+            .Include(c => c.Garcom)
+            .Where(c => c.Situacao == SituacaoConta.Aberta)
+            .ToList();
+    }
+
+    public List<Conta> SelecionarFechadas()
+    {
+        return RegistrosDoUsuario()
+            .Include(c => c.Mesa)
+            .Include(c => c.Garcom)
+            .Where(c => c.Situacao == SituacaoConta.Fechada)
+            .ToList();
+    }
 }
