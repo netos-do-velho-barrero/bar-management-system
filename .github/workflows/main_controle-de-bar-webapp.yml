@@ -68,6 +68,11 @@ jobs:
             "Infra__NewRelic__LicenseKey=${{ secrets.NEWRELIC_LICENSE_KEY }}" `
             "Apresentacao__AutoMapper__LicenseKey=${{ secrets.AUTOMAPPER_LICENSE_KEY }}"
 
+      # Aguardar o App Service estabilizar após o restart causado pela mudança de appsettings
+      - name: Wait for App Service to stabilize
+        shell: pwsh
+        run: Start-Sleep -Seconds 30
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
