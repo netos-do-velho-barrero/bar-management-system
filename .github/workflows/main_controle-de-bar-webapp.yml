@@ -66,7 +66,8 @@ jobs:
             --settings `
             "ConnectionStrings__SqlServerEF=${{ secrets.AZURESQL_CONNECTION_STRING }}" `
             "Infra__NewRelic__LicenseKey=${{ secrets.NEWRELIC_LICENSE_KEY }}" `
-            "Apresentacao__AutoMapper__LicenseKey=${{ secrets.AUTOMAPPER_LICENSE_KEY }}"
+            "Apresentacao__AutoMapper__LicenseKey=${{ secrets.AUTOMAPPER_LICENSE_KEY }}" `
+            "WEBSITE_RUN_FROM_PACKAGE=1"
 
       # Aguardar o App Service estabilizar após o restart causado pela mudança de appsettings
       - name: Wait for App Service to stabilize
