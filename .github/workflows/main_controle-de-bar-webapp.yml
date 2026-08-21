@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read # This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -35,12 +35,43 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
-  deploy:
+  migrate:
     runs-on: windows-latest
     needs: build
     permissions:
-      id-token: write # This is required for requesting the JWT
-      contents: read # This is required for actions/checkout
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restore dependencies
+        run: dotnet restore src/ControleDeBar.WebApp/ControleDeBar.WebApp.csproj
+
+      - name: Install Entity Framework CLI
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Apply ORM migrations to AzureSQL
+        env:
+          AZURESQL_CONNECTION_STRING: ${{ secrets.AZURESQL_CONNECTION_STRING }}
+          Infra__NewRelic__LicenseKey: ${{ secrets.NEWRELIC_LICENSE_KEY }}
+        run: |
+          dotnet ef database update `
+            --project src/ControleDeBar.Infra/ControleDeBar.Infra.csproj `
+            --startup-project src/ControleDeBar.WebApp/ControleDeBar.WebApp.csproj `
+            --configuration Release `
+            --connection "$env:AZURESQL_CONNECTION_STRING"
+
+  deploy:
+    runs-on: windows-latest
+    needs: [build, migrate]
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
@@ -55,7 +86,6 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_511870ABB15F4C11A3405BCEDF344BF2 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AE4E605AAAC849FFAA67B5083F47DE4A }}
 
-      # Atualizar variaveis de ambiente web app
       - name: Configure Azure Web App settings
         shell: pwsh
         run: |
@@ -68,7 +98,6 @@ jobs:
             "Apresentacao__AutoMapper__LicenseKey=${{ secrets.AUTOMAPPER_LICENSE_KEY }}" `
             "WEBSITE_RUN_FROM_PACKAGE=1"
 
-      # Aguardar o App Service estabilizar após o restart causado pela mudança de appsettings
       - name: Wait for App Service to stabilize
         shell: pwsh
         run: Start-Sleep -Seconds 30
