@@ -1,37 +1,43 @@
-@model ControleDeBar.WebApp.Modulos.ModuloMesa.EditarMesaViewModel
-
 @{
-    ViewData["Title"] = "Editar Mesa";
+    Layout = "_Layout";
+    ViewBag.Titulo = "Edição de Mesa";
 }
+@model ControleDeBar.WebApp.Modulos.ModuloMesa.EditarMesaViewModel;
 
-<h1>Editar Mesa</h1>
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Editar"
+      asp-route-id="@Model.Id" method="post">
 
-<form asp-action="Editar" method="post">
+    <input asp-for="Id" type="hidden">
 
-    <input asp-for="Id" type="hidden" />
+    <div asp-validation-summary="ModelOnly" class="text-danger small fw-semibold mb-3"></div>
 
     <div class="mb-3">
-        <label asp-for="Numero" class="form-label"></label>
-        <input asp-for="Numero" class="form-control" />
-        <span asp-validation-for="Numero" class="text-danger"></span>
+        <label asp-for="Numero" class="form-label fw-semibold text-primary text-uppercase small">
+            Número
+        </label>
+
+        <input asp-for="Numero" type="number" class="form-control">
+
+        <span asp-validation-for="Numero" class="text-danger small fw-semibold"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="QuantidadeLugares" class="form-label"></label>
-        <input asp-for="QuantidadeLugares" class="form-control" />
-        <span asp-validation-for="QuantidadeLugares" class="text-danger"></span>
+        <label asp-for="QuantidadeLugares" class="form-label fw-semibold text-primary text-uppercase small">
+            Quantidade de Lugares
+        </label>
+
+        <input asp-for="QuantidadeLugares" type="number" class="form-control">
+
+        <span asp-validation-for="QuantidadeLugares" class="text-danger small fw-semibold"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Salvar alterações
-    </button>
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">
+            Voltar
+        </a>
 
-    <a asp-action="Listar" class="btn btn-secondary">
-        Voltar
-    </a>
+        <button class="btn btn-primary rounded-pill px-4" type="submit">
+            Confirmar
+        </button>
+    </div>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
-

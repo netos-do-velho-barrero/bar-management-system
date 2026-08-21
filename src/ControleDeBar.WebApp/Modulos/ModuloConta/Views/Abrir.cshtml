@@ -1,93 +1,79 @@
-@model ControleDeBar.WebApp.Modulos.ModuloConta.AbrirContaViewModel
-
 @{
-    ViewData["Title"] = "Abrir Conta";
+    Layout = "_Layout";
+    ViewBag.Titulo = "Abrir Conta";
 
-    var mesas = ViewBag.Mesas as List<ControleDeBar.WebApp.Modulos.ModuloConta.OpcaoMesaContaViewModel>
+    var mesas =
+        ViewBag.Mesas as List<ControleDeBar.WebApp.Modulos.ModuloConta.OpcaoMesaContaViewModel>
         ?? [];
 
-    var garcons = ViewBag.Garcons as List<ControleDeBar.WebApp.Modulos.ModuloConta.OpcaoGarcomContaViewModel>
+    var garcons =
+        ViewBag.Garcons as List<ControleDeBar.WebApp.Modulos.ModuloConta.OpcaoGarcomContaViewModel>
         ?? [];
 }
+@model ControleDeBar.WebApp.Modulos.ModuloConta.AbrirContaViewModel;
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Abrir Conta</h1>
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Abrir"
+      method="post">
 
-    <a asp-action="Listar" class="btn btn-secondary">
-        Voltar
-    </a>
-</div>
+    <div asp-validation-summary="ModelOnly" class="text-danger small fw-semibold mb-3"></div>
 
-<div class="card">
-    <div class="card-body">
+    <div class="mb-3">
+        <label asp-for="MesaId" class="form-label fw-semibold text-primary text-uppercase small">
+            Mesa
+        </label>
 
-        <form asp-action="Abrir" method="post">
+        <select asp-for="MesaId" class="form-select">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <option value="">Selecione uma mesa</option>
 
-            <div class="mb-3">
-                <label asp-for="MesaId" class="form-label">
-                    Mesa
-                </label>
+            @foreach (var mesa in mesas)
+            {
+                <option value="@mesa.Id">
+                    Mesa @mesa.Numero
+                </option>
+            }
+        </select>
 
-                <select asp-for="MesaId" class="form-select">
-                    <option value="">Selecione uma mesa</option>
-
-                    @foreach (var mesa in mesas)
-                    {
-                        <option value="@mesa.Id">
-                            Mesa @mesa.Numero
-                        </option>
-                    }
-                </select>
-
-                <span asp-validation-for="MesaId" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="GarcomId" class="form-label">
-                    Garçom
-                </label>
-
-                <select asp-for="GarcomId" class="form-select">
-                    <option value="">Selecione um garçom</option>
-
-                    @foreach (var garcom in garcons)
-                    {
-                        <option value="@garcom.Id">
-                            @garcom.Nome
-                        </option>
-                    }
-                </select>
-
-                <span asp-validation-for="GarcomId" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="NomeCliente" class="form-label">
-                    Nome do cliente
-                </label>
-
-                <input asp-for="NomeCliente" class="form-control" placeholder="Digite o nome do cliente" />
-
-                <span asp-validation-for="NomeCliente" class="text-danger"></span>
-            </div>
-
-            <div class="d-flex justify-content-end gap-2">
-                <a asp-action="Listar" class="btn btn-secondary">
-                    Cancelar
-                </a>
-
-                <button type="submit" class="btn btn-primary">
-                    Abrir Conta
-                </button>
-            </div>
-
-        </form>
-
+        <span asp-validation-for="MesaId" class="text-danger small fw-semibold"></span>
     </div>
-</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <div class="mb-3">
+        <label asp-for="GarcomId" class="form-label fw-semibold text-primary text-uppercase small">
+            Garçom
+        </label>
+
+        <select asp-for="GarcomId" class="form-select">
+
+            <option value="">Selecione um garçom</option>
+
+            @foreach (var garcom in garcons)
+            {
+                <option value="@garcom.Id">
+                    @garcom.Nome
+                </option>
+            }
+        </select>
+
+        <span asp-validation-for="GarcomId" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NomeCliente" class="form-label fw-semibold text-primary text-uppercase small">
+            Nome do Cliente
+        </label>
+
+        <input asp-for="NomeCliente" type="text" class="form-control" placeholder="Digite o nome do cliente">
+
+        <span asp-validation-for="NomeCliente" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">
+            Voltar
+        </a>
+
+        <button class="btn btn-primary rounded-pill px-4" type="submit">
+            Confirmar
+        </button>
+    </div>
+</form>

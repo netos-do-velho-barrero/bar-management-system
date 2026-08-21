@@ -1,9 +1,9 @@
-@model List<ControleDeBar.WebApp.Modulos.ModuloGarcom.ListarGarcomViewModel>
-
+@using ControleDeBar.WebApp.Modulos.ModuloGarcom
 @{
-    ViewData["Title"] = "Garçons";
+    Layout = "_Layout";
     ViewBag.Titulo = "Gerenciar Garçons";
 }
+@model List<ControleDeBar.WebApp.Modulos.ModuloGarcom.ListarGarcomViewModel>;
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
@@ -12,8 +12,10 @@
             Total de garçons: <strong>@Model.Count</strong>
         </p>
     </div>
-    <a asp-action="Cadastrar" class="btn btn-primary rounded-3 px-4">
-        <i class="bi bi-plus-lg me-2"></i>Cadastrar Novo Garçom
+
+    <a class="btn btn-primary rounded-3 px-4" asp-action="Cadastrar">
+        <i class="bi bi-plus-lg me-2"></i>
+        Cadastrar Novo Garçom
     </a>
 </div>
 
@@ -21,41 +23,58 @@
 {
     <div class="alert alert-primary border-start border-4 rounded-3">
         <i class="bi bi-info-circle me-2"></i>
-        <strong>Nenhum garçom cadastrado.</strong> Comece adicionando sua equipe!
+        <strong>Nenhum garçom cadastrado.</strong>
+        Comece adicionando sua equipe!
     </div>
 }
 else
 {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-        @foreach (var garcom in Model.OrderBy(g => g.Nome))
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
+        @foreach (ListarGarcomViewModel g in Model.OrderBy(x => x.Nome))
         {
             <div class="col">
                 <div class="card h-100 border-0 shadow-sm">
                     <div class="card-body d-flex flex-column">
+
                         <div class="d-flex align-items-start mb-3">
                             <div class="p-3 bg-info-subtle text-info rounded-3 me-3">
                                 <i class="bi bi-person-badge fs-5"></i>
                             </div>
+
                             <div>
-                                <h5 class="card-title fw-bold mb-0">@garcom.Nome</h5>
-                                <small class="text-muted">ID: @garcom.Id.ToString().Substring(0, 8)...</small>
+                                <h5 class="card-title fw-bold text-dark mb-0">
+                                    @g.Nome
+                                </h5>
+
+                                <small class="text-muted">
+                                    <i class="bi bi-key me-1"></i>
+                                    <span class="text-break">
+                                        @g.Id.ToString().Substring(0, 12)...
+                                    </span>
+                                </small>
                             </div>
                         </div>
 
                         <div class="mt-auto d-flex flex-wrap gap-2">
-                            <a asp-action="Detalhes" asp-route-id="@garcom.Id"
-                               class="btn btn-sm btn-outline-secondary rounded-2 flex-grow-1" title="Visualizar detalhes">
-                                <i class="bi bi-eye me-1"></i>Ver
+                            <a class="btn btn-outline-secondary btn-sm rounded-2 flex-grow-1" asp-action="Detalhes"
+                               asp-route-id="@g.Id" title="Visualizar detalhes">
+                                <i class="bi bi-eye me-1"></i>
+                                Ver
                             </a>
-                            <a asp-action="Editar" asp-route-id="@garcom.Id"
-                               class="btn btn-sm btn-outline-primary rounded-2 flex-grow-1" title="Editar garçom">
-                                <i class="bi bi-pencil me-1"></i>Editar
+
+                            <a class="btn btn-outline-primary btn-sm rounded-2 flex-grow-1" asp-action="Editar"
+                               asp-route-id="@g.Id" title="Editar garçom">
+                                <i class="bi bi-pencil me-1"></i>
+                                Editar
                             </a>
-                            <a asp-action="Excluir" asp-route-id="@garcom.Id"
-                               class="btn btn-sm btn-outline-danger rounded-2 flex-grow-1" title="Excluir garçom">
-                                <i class="bi bi-trash me-1"></i>Excluir
+
+                            <a class="btn btn-outline-danger btn-sm rounded-2 flex-grow-1" asp-action="Excluir"
+                               asp-route-id="@g.Id" title="Excluir garçom">
+                                <i class="bi bi-trash me-1"></i>
+                                Excluir
                             </a>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -64,7 +83,8 @@ else
 
     <div class="alert alert-info mt-4 border-start border-4 rounded-3" role="alert">
         <i class="bi bi-shield-check me-2"></i>
-        <strong>Privacidade Garantida:</strong> Você só vê garçons do seu bar. Nenhum outro usuário tem acesso a essas
-        informações.
+        <strong>Privacidade Garantida:</strong>
+        Você só vê garçons do seu bar. Nenhum outro usuário tem acesso a
+        essas informações.
     </div>
 }

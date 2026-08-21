@@ -1,33 +1,73 @@
-@model ControleDeBar.WebApp.Modulos.ModuloMesa.DetalhesMesaViewModel
-
 @{
-    ViewData["Title"] = "Excluir Mesa";
+    Layout = "_Layout";
+    ViewBag.Titulo = "Exclusão de Mesa";
 }
+@model ControleDeBar.WebApp.Modulos.ModuloMesa.DetalhesMesaViewModel;
 
-<h1>Excluir Mesa</h1>
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Excluir"
+      method="post">
 
-<p>Tem certeza que deseja excluir esta mesa?</p>
+    <input asp-for="Id" type="hidden">
 
-<dl class="row">
-    <dt class="col-sm-3">Número</dt>
-    <dd class="col-sm-9">@Model.Numero</dd>
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        <i class="bi bi-exclamation-circle me-2"></i>
+        Deseja realmente excluir esta mesa?
+    </div>
 
-    <dt class="col-sm-3">Quantidade de lugares</dt>
-    <dd class="col-sm-9">@Model.QuantidadeLugares</dd>
+    <dl class="row mb-0">
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            ID
+        </dt>
 
-    <dt class="col-sm-3">Status</dt>
-    <dd class="col-sm-9">@Model.Status</dd>
-</dl>
+        <dd class="col-sm-8 text-break">
+            @Model.Id
+        </dd>
 
-<form asp-action="Excluir" method="post">
-    <input asp-for="Id" type="hidden" />
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Número
+        </dt>
 
-    <button type="submit" class="btn btn-danger">
-        Confirmar exclusão
-    </button>
+        <dd class="col-sm-8">
+            @Model.Numero
+        </dd>
 
-    <a asp-action="Listar" class="btn btn-secondary">
-        Cancelar
-    </a>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Quantidade de Lugares
+        </dt>
+
+        <dd class="col-sm-8">
+            @Model.QuantidadeLugares
+        </dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Status
+        </dt>
+
+        <dd class="col-sm-8">
+            @if (Model.Status == "Livre")
+            {
+                <span class="badge bg-success rounded-2 px-2 py-1">
+                    <i class="bi bi-check-circle me-1"></i>
+                    Livre
+                </span>
+            }
+            else
+            {
+                <span class="badge bg-warning text-dark rounded-2 px-2 py-1">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    @Model.Status
+                </span>
+            }
+        </dd>
+    </dl>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">
+            Voltar
+        </a>
+
+        <button class="btn btn-primary rounded-pill px-4" type="submit">
+            Confirmar
+        </button>
+    </div>
 </form>
-

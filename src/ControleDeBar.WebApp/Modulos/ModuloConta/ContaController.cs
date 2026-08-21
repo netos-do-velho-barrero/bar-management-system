@@ -151,7 +151,7 @@ public class ContaController(
                 resultado.Value
             );
 
-        return View("Fechar", vm);
+        return View(vm);
     }
 
     [HttpPost]

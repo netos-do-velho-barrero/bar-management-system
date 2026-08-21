@@ -1,84 +1,110 @@
-@model ControleDeBar.WebApp.Modulos.ModuloConta.DetalhesContaViewModel
-
 @{
-    ViewData["Title"] = "Detalhes da Conta";
+    Layout = "_Layout";
+    ViewBag.Titulo = "Detalhes da Conta";
 }
 
-<h1>Detalhes da Conta</h1>
+@model ControleDeBar.WebApp.Modulos.ModuloConta.DetalhesContaViewModel;
 
-<div class="card mb-4">
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">
-                Mesa
-            </dt>
+<div class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 720px;">
 
-            <dd class="col-sm-9">
+    <dl class="row mb-0">
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            ID
+        </dt>
+
+        <dd class="col-sm-8 text-break">
+            @Model.Id
+        </dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Mesa
+        </dt>
+
+        <dd class="col-sm-8">
+            <span class="badge bg-info-subtle text-info rounded-2 px-3 py-2">
+                <i class="bi bi-grid-3x3-gap me-1"></i>
                 Mesa @Model.NumeroMesa
-            </dd>
+            </span>
+        </dd>
 
-            <dt class="col-sm-3">
-                Garçom
-            </dt>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Garçom
+        </dt>
 
-            <dd class="col-sm-9">
-                @Model.NomeGarcom
-            </dd>
+        <dd class="col-sm-8">
+            @Model.NomeGarcom
+        </dd>
 
-            <dt class="col-sm-3">
-                Cliente
-            </dt>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Cliente
+        </dt>
 
-            <dd class="col-sm-9">
-                @Model.NomeCliente
-            </dd>
+        <dd class="col-sm-8">
+            @Model.NomeCliente
+        </dd>
 
-            <dt class="col-sm-3">
-                Data de abertura
-            </dt>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Data de Abertura
+        </dt>
 
-            <dd class="col-sm-9">
-                @Model.DataAbertura.ToString("dd/MM/yyyy")
-            </dd>
+        <dd class="col-sm-8">
+            @Model.DataAbertura.ToString("dd/MM/yyyy HH:mm")
+        </dd>
 
-            <dt class="col-sm-3">
-                Situação
-            </dt>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Situação
+        </dt>
 
-            <dd class="col-sm-9">
-                @Model.Situacao
-            </dd>
+        <dd class="col-sm-8">
+            @if (Model.Situacao == "Aberta")
+            {
+                <span class="badge bg-success rounded-2 px-3 py-2">
+                    <i class="bi bi-unlock me-1"></i>
+                    Aberta
+                </span>
+            }
+            else
+            {
+                <span class="badge bg-danger rounded-2 px-3 py-2">
+                    <i class="bi bi-lock me-1"></i>
+                    Fechada
+                </span>
+            }
+        </dd>
 
-            <dt class="col-sm-3">
-                Valor total
-            </dt>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">
+            Valor Total
+        </dt>
 
-            <dd class="col-sm-9">
+        <dd class="col-sm-8">
+            <strong class="text-dark">
                 @Model.ValorTotal.ToString("C")
-            </dd>
-        </dl>
+            </strong>
+        </dd>
+
+    </dl>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">
+            Voltar
+        </a>
 
         @if (Model.Situacao == "Aberta")
         {
-            <a asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">
+            <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Editar" asp-route-id="@Model.Id">
                 Editar
             </a>
 
-            <form asp-action="Fechar" asp-route-id="@Model.Id" method="post" class="d-inline">
-                <button type="submit" class="btn btn-success">
-                    Fechar Conta
-                </button>
-            </form>
+            <a class="btn btn-outline-success rounded-pill px-4" asp-action="ConfirmarFechamento" asp-route-id="@Model.Id">
+                Fechar Conta
+            </a>
         }
 
-        <a asp-action="Listar" class="btn btn-secondary">
-            Voltar
-        </a>
     </div>
 </div>
 
-@* Substitui o bloco antigo de <h2>Pedidos</h2> + tabela somente-leitura pela
-   partial, que já traz: botão "Adicionar Produto", form de editar quantidade
-   inline e botão "Remover" por item — tudo condicionado a Situacao == "Aberta"
-   dentro da própria partial, então não precisa repetir esse if aqui. *@
-@await Html.PartialAsync("~/Modulos/ModuloPedidoConta/Views/Listar.cshtml", Model)
+@await Html.PartialAsync(
+    "~/Modulos/ModuloPedidoConta/Views/Listar.cshtml",
+    Model)
