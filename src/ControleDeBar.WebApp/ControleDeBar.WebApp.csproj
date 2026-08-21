@@ -4,13 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UseAppHost>false</UseAppHost> <!-- ADICIONADO AQUI PARA DESTRAVAR -->
+    <UseAppHost>false</UseAppHost>
 
     <UserSecretsId>daa13d4c-2cd8-4a70-bdb3-54ce7be1d237</UserSecretsId>
 
-    <!-- Restringe o publish para o runtime do Azure (Windows x64), evitando empacotar
-         bibliotecas nativas de macOS, Linux, ARM, x86 etc. que não são usadas -->
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <!-- Compatível com a arquitetura do plano Free da Azure -->
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
     <SelfContained>false</SelfContained>
   </PropertyGroup>
 

@@ -24,10 +24,10 @@ jobs:
           dotnet-version: '10.x'
 
       - name: Build with dotnet
-        run: dotnet build src/ControleDeBar.WebApp/ControleDeBar.WebApp.csproj --configuration Release
+        run: dotnet build src/ControleDeBar.WebApp/ControleDeBar.WebApp.csproj --configuration Release -r win-x86
 
       - name: dotnet publish
-        run: dotnet publish src/ControleDeBar.WebApp/ControleDeBar.WebApp.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish src/ControleDeBar.WebApp/ControleDeBar.WebApp.csproj -c Release -r win-x86 --self-contained false -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -54,7 +54,6 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_59BA4E193D4D4736A9C8229715209895 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_511870ABB15F4C11A3405BCEDF344BF2 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AE4E605AAAC849FFAA67B5083F47DE4A }}
-
 
       # Atualizar variaveis de ambiente web app
       - name: Configure Azure Web App settings
